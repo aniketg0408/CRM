@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Phone, Check, X, Mail, MapPin, Linkedin, Twitter, Github, ArrowRight, TrendingUp, Users, Award, Clock, ChevronDown, UserPlus, PhoneCall, Sparkles, Trophy, Zap, Shield, Smartphone, FileText, RefreshCw, BarChart2, Target, Building2, ClipboardList, MessageSquare, Briefcase, CheckSquare, Activity, UserCircle, Lock, History, GitMerge, Rocket, Crown, LayoutGrid, Settings2, Calendar } from 'lucide-react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import logoImage from './logo.png';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -585,11 +586,18 @@ function useFullPageAnimations() {
 }
 
 export default function App() {
+  const [loading, setLoading] = useState(true);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
   const [openFaq, setOpenFaq] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [activeFaqCategory, setActiveFaqCategory] = useState(0);
   const [legalModal, setLegalModal] = useState<string | null>(null);
+
+  // Simulate loading and hide after component mounts
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2500);
+    return () => clearTimeout(timer);
+  }, []);
 
   // Initialize GSAP animations
   const { heroLeftRef, heroRightRef, badgeRef, headingRef, descRef, ctaContainerRef } = useHeroAnimation();
@@ -706,6 +714,85 @@ export default function App() {
 
   return (
     <div className="min-h-screen" style={{ fontFamily: 'Inter, sans-serif', backgroundColor: '#FFFFFF' }}>
+
+      {/* LOADING SCREEN */}
+      {loading && (
+        <div style={{
+          position: 'fixed',
+          inset: 0,
+          zIndex: 9999,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: '#FFFFFF',
+          animation: 'fadeOut 0.8s ease-out forwards',
+          animationDelay: '1.7s'
+        }}>
+          <style>{`
+            @keyframes fadeOut {
+              0% { opacity: 1; }
+              100% { opacity: 0; pointer-events: none; }
+            }
+            @keyframes slideInDown {
+              0% { opacity: 0; transform: translateY(-30px); }
+              100% { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes slideInUp {
+              0% { opacity: 0; transform: translateY(30px); }
+              100% { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+            .loading-logo { animation: slideInDown 0.8s ease-out; }
+            .loading-text { animation: slideInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
+            .loading-spinner { animation: spin 2s linear infinite; }
+          `}</style>
+
+          {/* Loading Logo */}
+          <div className="loading-logo" >
+            <div style={{
+              width: '160px',
+              height: '160px',
+              borderRadius: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <img 
+                src={logoImage} 
+                alt="Averlon World Logo"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'contain',
+                  borderRadius: '12px'
+                }}
+              />
+            </div>
+          </div>
+
+          {/* Loading Text */}
+          <div className="loading-text" style={{ textAlign: 'center', marginBottom: '40px' }}>
+            <p style={{
+              fontSize: '22px',
+              color: '#64748B',
+              fontWeight: 500,
+              marginLeft: '4px',
+              marginTop: '-26px'
+            }}>
+              Powered by Averlon
+            </p>
+          </div>
+
+          
+
+          
+          
+        </div>
+      )}
 
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 bg-white" style={{ borderBottom: '1px solid #E2E8F0', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
@@ -879,25 +966,38 @@ export default function App() {
           </div>
       </nav>
 
+      {/* TAGLINE BAR - Below Navbar */}
+      <div style={{
+        width: '100%',
+        padding: '12px 0',
+        textAlign: 'center',
+        background: '#0F1F3D',
+        borderBottom: '1px solid rgba(11,94,215,0.15)',
+        position: 'relative',
+        zIndex: 40
+      }}>
+        <p style={{
+          fontSize: '14px',
+          color: '#FFFFFF',
+          fontWeight: 500,
+          margin: 0,
+          fontFamily: 'Inter, sans-serif',
+          letterSpacing: '0.01em'
+        }}>
+          Empowering Businesses with Strength, Backed by Reliability, and Grounded in Stability.
+        </p>
+      </div>
+
       {/* Page content wrapper — overflow-x hidden here keeps horizontal scroll contained without breaking sticky nav */}
       <div style={{ overflowX: 'hidden' }}>
 
-      {/* ANNOUNCEMENT STRIP — below navbar */}
-      <div style={{ backgroundColor: '#0F1F3D', padding: '9px 0' }}>
-        <div className="max-w-[1200px] mx-auto px-4 sm:px-6 text-center">
-          <p style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: 500, letterSpacing: '0.01em', lineHeight: 1.5 }}>
-            Empowering Businesses with Strength, Backed by Reliability, and Grounded in Stability.
-          </p>
-        </div>
-      </div>
-
       {/* HERO */}
       <section id="home" className="bg-white relative overflow-hidden" style={{
-        minHeight: 'calc(100vh - 68px - 38px)',
+        minHeight: 'auto',
         display: 'flex',
         alignItems: 'center',
-        paddingTop: '40px',
-        paddingBottom: '40px',
+        paddingTop: '60px',
+        paddingBottom: '60px',
       }}>
         <div className="absolute inset-0 pointer-events-none" style={{
           backgroundImage: 'radial-gradient(circle at 70% 50%, rgba(30,136,229,0.07) 0%, transparent 60%), radial-gradient(circle at 10% 80%, rgba(11,94,215,0.05) 0%, transparent 50%)'
@@ -2125,10 +2225,10 @@ export default function App() {
 
           {/* Bottom bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p style={{ color: '#5A6080', fontSize: '12px', textAlign: 'center' }}>© 2025 CRM by Avelon. All rights reserved.</p>
+            <p style={{ color: '#5A6080', fontSize: '12px', textAlign: 'center' }}>© 2025 CRM by Averlon. All rights reserved.</p>
             <p style={{ color: '#5A6080', fontSize: '12px' }}>
               Powered by{' '}
-              <span style={{ color: '#C4C9DD', fontWeight: 600 }}>Avelon</span>
+              <span style={{ color: '#C4C9DD', fontWeight: 600 }}>Averlon</span>
             </p>
           </div>
 
