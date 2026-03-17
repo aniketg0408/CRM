@@ -1,5 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Phone, Check, X, Mail, MapPin, Linkedin, Twitter, Github, ArrowRight, TrendingUp, Users, Award, Clock, ChevronDown } from 'lucide-react';
+import { Phone, Check, X, Mail, MapPin, Linkedin, Twitter, Github, ArrowRight, TrendingUp, Users, Award, Clock, ChevronDown, UserPlus, PhoneCall, Sparkles, Trophy, Zap, Shield, Smartphone, FileText, RefreshCw, BarChart2, Target, Building2, ClipboardList, MessageSquare, Briefcase, CheckSquare, Activity, UserCircle, Lock, History, GitMerge, Rocket, Crown, LayoutGrid, Settings2, Calendar } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+// Register ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
 
 // Animated counter hook
 function useCounter(end: number, duration: number = 2000, startOnView: boolean = true) {
@@ -31,12 +36,566 @@ function useCounter(end: number, duration: number = 2000, startOnView: boolean =
   return { count, ref };
 }
 
+// GSAP Hero Animation Hook
+function useHeroAnimation() {
+  const heroLeftRef = useRef<HTMLDivElement>(null);
+  const heroRightRef = useRef<HTMLDivElement>(null);
+  const badgeRef = useRef<HTMLDivElement>(null);
+  const headingRef = useRef<HTMLHeadingElement>(null);
+  const descRef = useRef<HTMLParagraphElement>(null);
+  const ctaContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!heroLeftRef.current || !heroRightRef.current) return;
+
+    // Set initial states - start visible, only animate position
+    gsap.set([heroLeftRef.current, heroRightRef.current], { opacity: 1 });
+    gsap.set(badgeRef.current, { opacity: 1, y: 20 });
+    gsap.set(headingRef.current, { opacity: 1, y: 30 });
+    gsap.set(descRef.current, { opacity: 1, y: 20 });
+    gsap.set(ctaContainerRef.current, { opacity: 1, y: 20 });
+    gsap.set(heroRightRef.current, { rotateY: -15, opacity: 1 });
+
+    // Create timeline
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+
+    // Left column stagger animations - just position, no fade
+    tl.to(badgeRef.current, { y: 0, duration: 0.6 }, 0)
+      .to(headingRef.current, { y: 0, duration: 0.7 }, 0.1)
+      .to(descRef.current, { y: 0, duration: 0.7 }, 0.2)
+      .to(ctaContainerRef.current, { y: 0, duration: 0.7 }, 0.3);
+
+    // Right column - dashboard mockup with 3D effect
+    tl.to(heroRightRef.current, 
+      { 
+        rotateY: 0, 
+        duration: 0.8,
+        ease: 'power2.out'
+      }, 0.2);
+
+    // Floating animation for dashboard
+    gsap.to(heroRightRef.current, {
+      y: -15,
+      duration: 2.5,
+      repeat: -1,
+      yoyo: true,
+      ease: 'sine.inOut'
+    });
+
+    // Scroll animation - hero section parallax (subtle effect)
+    gsap.to(heroLeftRef.current, {
+      scrollTrigger: {
+        trigger: heroLeftRef.current,
+        start: 'top 50%',
+        end: 'bottom 20%',
+        scrub: 0.5,
+      },
+      y: -40,
+      ease: 'none'
+    });
+
+    gsap.to(heroRightRef.current, {
+      scrollTrigger: {
+        trigger: heroRightRef.current,
+        start: 'top 50%',
+        end: 'bottom 20%',
+        scrub: 0.7,
+      },
+      rotateY: 8,
+      y: 40,
+      ease: 'none'
+    });
+
+    return () => {
+      tl.kill();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
+  return { heroLeftRef, heroRightRef, badgeRef, headingRef, descRef, ctaContainerRef };
+}
+
+// Full Page Scroll Animations Hook
+function useFullPageAnimations() {
+  useEffect(() => {
+    // Features section cards - ADVANCED multi-effect animations
+    const featureCards = document.querySelectorAll('[data-animate="feature-card"]');
+    featureCards.forEach((card, index) => {
+      // OPTION 1: STAGGERED SLIDE UP (Default - Active)
+      gsap.set(card, { opacity: 1, y: 60, x: 0, scale: 1 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          end: 'top 55%',
+          scrub: 0.3,
+        },
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+        delay: index * 0.08
+      });
+
+      // Bonus: Icon animation
+      const icon = card.querySelector('.feature-icon');
+      if (icon) {
+        gsap.set(icon, { rotation: 0, scale: 1 });
+        gsap.to(icon, {
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            end: 'top 55%',
+            scrub: 0.3,
+          },
+          rotation: 360,
+          scale: 1.1,
+          ease: 'none',
+          delay: index * 0.08
+        });
+      }
+
+      // OPTION 2: STAGGERED SCALE WITH TILT (Uncomment to use)
+      /*
+      gsap.set(card, { opacity: 1, scale: 0.85, y: 40, rotationY: 15 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          end: 'top 55%',
+          scrub: 0.4,
+        },
+        scale: 1,
+        y: 0,
+        rotationY: 0,
+        opacity: 1,
+        ease: 'back.out',
+        delay: index * 0.1
+      });
+      */
+
+      // OPTION 3: STAGGERED FLIP ENTRANCE (Uncomment to use)
+      /*
+      gsap.set(card, { opacity: 1, rotationX: 90, y: 40, transformPerspective: 1000 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          end: 'top 55%',
+          scrub: 0.5,
+        },
+        rotationX: 0,
+        y: 0,
+        opacity: 1,
+        ease: 'power3.out',
+        delay: index * 0.12
+      });
+      */
+    });
+
+    // How-it-works steps - ADVANCED scroll animations (multiple options)
+    const steps = document.querySelectorAll('[data-animate="step"]');
+    
+    steps.forEach((step, index) => {
+      // OPTION 1: FLOWING CASCADE (Active by default)
+      // Each step flows in sequence from left, stacks upward
+      const flowDelay = index * 0.15;
+      gsap.set(step, { opacity: 1, x: -60, y: 30, rotation: -2 });
+      gsap.to(step, {
+        scrollTrigger: {
+          trigger: step,
+          start: 'top 75%',
+          end: 'top 35%',
+          scrub: 0.5,
+        },
+        x: 0,
+        y: 0,
+        rotation: 0,
+        opacity: 1,
+        ease: 'power3.out',
+        delay: flowDelay * 0.1
+      });
+
+      // OPTION 2: STAGGERED SCALE POP (Comment in to use)
+      // Uncomment below to replace Option 1
+      /*
+      gsap.set(step, { opacity: 1, scale: 0.8, y: 40 });
+      gsap.to(step, {
+        scrollTrigger: {
+          trigger: step,
+          start: 'top 80%',
+          end: 'top 45%',
+          scrub: 0.4,
+        },
+        scale: 1,
+        y: 0,
+        ease: 'elastic.out(1.2, 0.75)', // Bouncy!
+        delay: index * 0.12
+      });
+      */
+
+      // OPTION 3: SPIRAL ROTATION (Comment in to use)
+      // Steps rotate and scale in a spiral motion
+      /*
+      gsap.set(step, { opacity: 1, scale: 0.6, rotation: 180, y: 60 });
+      gsap.to(step, {
+        scrollTrigger: {
+          trigger: step,
+          start: 'top 75%',
+          end: 'top 40%',
+          scrub: 0.6,
+        },
+        scale: 1,
+        rotation: 0,
+        y: 0,
+        ease: 'power2.out',
+        delay: index * 0.08
+      });
+      */
+
+      // Bonus: Connector line animation
+      // Animates the line connecting steps
+      if (index === 0) {
+        const connector = document.querySelector('[data-animate="step-connector"]');
+        if (connector) {
+          gsap.set(connector, { scaleX: 0, transformOrigin: 'left center' });
+          gsap.to(connector, {
+            scrollTrigger: {
+              trigger: step,
+              start: 'top 70%',
+              end: 'top 50%',
+              scrub: 0.4,
+            },
+            scaleX: 1,
+            ease: 'power2.inOut'
+          });
+        }
+      }
+    });
+
+    // Lead Management cards - ENHANCED advanced animations
+    const leadMgmtCards = document.querySelectorAll('[data-animate="lead-mgmt-card"]');
+    leadMgmtCards.forEach((card, index) => {
+      // OPTION 1: PARALLAX REVEAL (Default - Active)
+      // Cards slide in with parallax and glow effect
+      gsap.set(card, { opacity: 1, x: index === 0 ? -100 : 100, y: 60, filter: 'blur(8px)' });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 72%',
+          end: 'top 40%',
+          scrub: 0.5,
+        },
+        x: 0,
+        y: 0,
+        filter: 'blur(0px)',
+        opacity: 1,
+        ease: 'power3.out',
+        delay: index * 0.25
+      });
+
+      // Bonus: Glow intensity animation
+      gsap.set(card, { boxShadow: '0 8px 24px rgba(11,94,215,0.08)' });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 72%',
+          end: 'top 40%',
+          scrub: 0.5,
+        },
+        boxShadow: '0 32px 80px rgba(11,94,215,0.24)',
+        ease: 'none'
+      });
+
+      // OPTION 2: FLIP WITH DEPTH (Uncomment to use)
+      /*
+      gsap.set(card, { opacity: 1, rotationY: index === 0 ? -45 : 45, y: 80, transformPerspective: 1200 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 72%',
+          end: 'top 40%',
+          scrub: 0.6,
+        },
+        rotationY: 0,
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+        delay: index * 0.2
+      });
+      */
+
+      // OPTION 3: SCALE WITH ROTATION (Uncomment to use)
+      /*
+      gsap.set(card, { opacity: 1, scale: 0.8, rotation: index === 0 ? -8 : 8, y: 50 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 72%',
+          end: 'top 40%',
+          scrub: 0.4,
+        },
+        scale: 1,
+        rotation: 0,
+        y: 0,
+        opacity: 1,
+        ease: 'elastic.out(1.2, 0.75)',
+        delay: index * 0.15
+      });
+      */
+    });
+
+    // Integration features - ADVANCED staggered animations
+    const integrationFeatures = document.querySelectorAll('[data-animate="integration-feature"]');
+    integrationFeatures.forEach((feature, index) => {
+      // OPTION 1: SLIDE IN WITH CHECKMARK BOUNCE (Default - Active)
+      gsap.set(feature, { opacity: 1, x: -60, y: 20 });
+      gsap.to(feature, {
+        scrollTrigger: {
+          trigger: feature,
+          start: 'top 80%',
+          end: 'top 55%',
+          scrub: 0.3,
+        },
+        x: 0,
+        y: 0,
+        opacity: 1,
+        ease: 'power3.out',
+        delay: index * 0.06
+      });
+
+      // Checkmark scales up
+      const checkmark = feature.querySelector('svg');
+      if (checkmark) {
+        gsap.set(checkmark, { scale: 0, rotation: -180 });
+        gsap.to(checkmark, {
+          scrollTrigger: {
+            trigger: feature,
+            start: 'top 80%',
+            end: 'top 55%',
+            scrub: 0.3,
+          },
+          scale: 1,
+          rotation: 0,
+          ease: 'back.out(1.3)',
+          delay: index * 0.06
+        });
+      }
+
+      // OPTION 2: ROTATE IN (Uncomment to use)
+      /*
+      gsap.set(feature, { opacity: 1, rotation: -90, y: 40 });
+      gsap.to(feature, {
+        scrollTrigger: {
+          trigger: feature,
+          start: 'top 80%',
+          end: 'top 55%',
+          scrub: 0.4,
+        },
+        rotation: 0,
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+        delay: index * 0.08
+      });
+      */
+
+      // OPTION 3: BLUR REVEAL (Uncomment to use)
+      /*
+      gsap.set(feature, { opacity: 0.2, filter: 'blur(12px)', x: -40 });
+      gsap.to(feature, {
+        scrollTrigger: {
+          trigger: feature,
+          start: 'top 80%',
+          end: 'top 55%',
+          scrub: 0.3,
+        },
+        opacity: 1,
+        filter: 'blur(0px)',
+        x: 0,
+        ease: 'power2.out',
+        delay: index * 0.05
+      });
+      */
+    });
+
+    // Integration cards - ADVANCED entrance animations
+    const integrationCards = document.querySelectorAll('[data-animate="integration-card"]');
+    integrationCards.forEach((card, index) => {
+      // OPTION 1: STAGGERED SCALE WITH BOUNCE (Default - Active)
+      gsap.set(card, { opacity: 1, scale: 0.7, y: 40, rotation: -15 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 75%',
+          end: 'top 50%',
+          scrub: 0.35,
+        },
+        scale: 1,
+        y: 0,
+        rotation: 0,
+        opacity: 1,
+        ease: 'elastic.out(1.4, 0.6)',
+        delay: (index % 3) * 0.12
+      });
+
+      // OPTION 2: FLIP + SCALE (Uncomment to use)
+      /*
+      gsap.set(card, { opacity: 1, rotationX: 80, scale: 0.8, y: 50 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 75%',
+          end: 'top 50%',
+          scrub: 0.4,
+        },
+        rotationX: 0,
+        scale: 1,
+        y: 0,
+        opacity: 1,
+        ease: 'power3.out',
+        delay: (index % 3) * 0.1
+      });
+      */
+
+      // OPTION 3: SPIRAL ENTRANCE (Uncomment to use)
+      /*
+      gsap.set(card, { opacity: 1, scale: 0.5, rotation: 180, y: 60 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 75%',
+          end: 'top 50%',
+          scrub: 0.5,
+        },
+        scale: 1,
+        rotation: 0,
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out',
+        delay: (index % 3) * 0.08
+      });
+      */
+    });
+
+    // Lead Management section header animation (bonus)
+    const leadMgmtHeader = document.querySelector('[id="lead-mgmt-header"]');
+    if (leadMgmtHeader) {
+      gsap.set(leadMgmtHeader, { opacity: 1, y: 30 });
+      gsap.to(leadMgmtHeader, {
+        scrollTrigger: {
+          trigger: leadMgmtHeader,
+          start: 'top 85%',
+          end: 'top 70%',
+          scrub: 0.3,
+        },
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out'
+      });
+    }
+
+    // Integration section header animation (bonus)
+    const integrationHeader = document.querySelector('[id="integration-header"]');
+    if (integrationHeader) {
+      gsap.set(integrationHeader, { opacity: 1, x: -40, y: 20 });
+      gsap.to(integrationHeader, {
+        scrollTrigger: {
+          trigger: integrationHeader,
+          start: 'top 80%',
+          end: 'top 60%',
+          scrub: 0.3,
+        },
+        x: 0,
+        y: 0,
+        opacity: 1,
+        ease: 'power2.out'
+      });
+    }
+    // Why Us section items - fade and slide
+    const whyUsItems = document.querySelectorAll('[data-animate="why-item"]');
+    whyUsItems.forEach((item, index) => {
+      gsap.set(item, { opacity: 1, x: index % 2 === 0 ? -40 : 40, y: 20 });
+      gsap.to(item, {
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 75%',
+          end: 'top 50%',
+          scrub: 0.3,
+        },
+        x: 0,
+        y: 0,
+        ease: 'power3.out'
+      });
+    });
+
+    // Pricing cards - scale and fade in
+    const pricingCards = document.querySelectorAll('[data-animate="pricing-card"]');
+    pricingCards.forEach((card, index) => {
+      gsap.set(card, { opacity: 1, scale: 0.92, y: 50 });
+      gsap.to(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 80%',
+          end: 'top 50%',
+          scrub: 0.3,
+        },
+        scale: 1,
+        y: 0,
+        ease: 'back.out',
+        delay: index * 0.1
+      });
+    });
+
+    // FAQ items - subtle reveal
+    const faqItems = document.querySelectorAll('[data-animate="faq-item"]');
+    faqItems.forEach((item, index) => {
+      gsap.set(item, { opacity: 1, y: 20 });
+      gsap.to(item, {
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 85%',
+          end: 'top 60%',
+          scrub: 0.2,
+        },
+        y: 0,
+        ease: 'power2.out',
+        delay: (index % 3) * 0.08
+      });
+    });
+
+    return () => {
+      featureCards.forEach(card => {
+        gsap.killTweensOf(card);
+      });
+      steps.forEach(step => {
+        gsap.killTweensOf(step);
+      });
+      whyUsItems.forEach(item => {
+        gsap.killTweensOf(item);
+      });
+      pricingCards.forEach(card => {
+        gsap.killTweensOf(card);
+      });
+      faqItems.forEach(item => {
+        gsap.killTweensOf(item);
+      });
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+}
+
 export default function App() {
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
   const [openFaq, setOpenFaq] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState(0);
   const [activeFaqCategory, setActiveFaqCategory] = useState(0);
   const [legalModal, setLegalModal] = useState<string | null>(null);
+
+  // Initialize GSAP animations
+  const { heroLeftRef, heroRightRef, badgeRef, headingRef, descRef, ctaContainerRef } = useHeroAnimation();
+  
+  // Initialize full page animations
+  useFullPageAnimations();
 
   const counter1 = useCounter(500);
   const counter2 = useCounter(10000);
@@ -103,6 +662,22 @@ export default function App() {
 
   const [activeNav, setActiveNav] = useState('home');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Prevent scroll behind menu
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? 'hidden' : 'auto';
+  }, [mobileMenuOpen]);
+
+  // Close menu on resize (critical bug fix)
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const sections = ['home', 'features', 'how-it-works', 'why-us', 'pricing', 'faq'];
@@ -235,17 +810,21 @@ export default function App() {
         </div>
 
         {/* Mobile dropdown — slides open below main bar */}
-        {mobileMenuOpen && (
-          <div
-            className="lg:hidden"
-            style={{
-              backgroundColor: '#FFFFFF',
-              borderTop: '1px solid #E2E8F0',
-              boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
-              position: 'absolute', left: 0, right: 0,
-              zIndex: 100,
-            }}
-          >
+        <div
+          className="lg:hidden"
+          style={{
+            position: 'fixed',
+            top: '68px',
+            left: 0,
+            right: 0,
+            backgroundColor: '#FFFFFF',
+            borderTop: '1px solid #E2E8F0',
+            boxShadow: '0 12px 32px rgba(0,0,0,0.12)',
+            transform: mobileMenuOpen ? 'translateY(0)' : 'translateY(-120%)',
+            transition: 'transform 0.3s ease',
+            zIndex: 100,
+          }}
+        >
             <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '12px 16px 16px' }}>
 
               {/* Nav links */}
@@ -298,7 +877,6 @@ export default function App() {
 
             </div>
           </div>
-        )}
       </nav>
 
       {/* Page content wrapper — overflow-x hidden here keeps horizontal scroll contained without breaking sticky nav */}
@@ -327,21 +905,21 @@ export default function App() {
 
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-[52%_48%] gap-8 lg:gap-10 items-center">
-            <div>
+            <div ref={heroLeftRef}>
               {/* Early access pill */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4" style={{ backgroundColor: '#EBF3FF', border: '1px solid #C7DFFE' }}>
+              <div ref={badgeRef} className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4" style={{ backgroundColor: '#EBF3FF', border: '1px solid #C7DFFE' }}>
                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: '#10B981' }}></div>
                 <span style={{ color: '#0B5ED7', fontSize: '11px', fontWeight: 600 }}>🚀 Early Access — Now Live · 500+ Companies Onboarded</span>
               </div>
-              <h1 style={{ fontSize: 'clamp(28px, 5vw, 50px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.12, marginBottom: '14px' }}>
+              <h1 ref={headingRef} style={{ fontSize: 'clamp(28px, 5vw, 50px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.12, marginBottom: '14px' }}>
                 Manage Leads.<br />
                 <span style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Close Deals.</span><br />
                 Grow Faster.
               </h1>
-              <p style={{ fontSize: '15px', color: '#64748B', lineHeight: 1.65, maxWidth: '420px', marginBottom: '24px' }}>
+              <p ref={descRef} style={{ fontSize: '15px', color: '#64748B', lineHeight: 1.65, maxWidth: '420px', marginBottom: '24px' }}>
                 A powerful yet simple CRM for sales teams — track every lead, deal, and follow-up without the complexity.
               </p>
-              <div className="flex flex-wrap items-center gap-3 mb-5">
+              <div ref={ctaContainerRef} className="flex flex-wrap items-center gap-3 mb-5">
                 <button className="px-7 py-3 rounded-xl text-white flex items-center gap-2 transition-all"
                   style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', fontWeight: 700, fontSize: '15px', boxShadow: '0 6px 20px rgba(11,94,215,0.35)' }}
                   onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-2px)'; e.currentTarget.style.boxShadow = '0 10px 28px rgba(11,94,215,0.45)'; }}
@@ -374,7 +952,7 @@ export default function App() {
             </div>
 
             {/* ── ENHANCED Hero Dashboard Mockup ── */}
-            <div className="relative mt-8 lg:mt-0" style={{ perspective: '1000px' }}>
+            <div ref={heroRightRef} className="relative mt-8 lg:mt-0" style={{ perspective: '1000px' }}>
               <div className="rounded-2xl overflow-hidden" style={{
                 border: '1px solid #E2E8F0',
                 boxShadow: '0 24px 64px rgba(11,94,215,0.16)',
@@ -561,7 +1139,7 @@ export default function App() {
                 featured: false,
               },
             ].map((feature, i) => (
-              <div key={i} className="rounded-2xl p-6 cursor-pointer relative overflow-hidden group"
+              <div key={i} data-animate="feature-card" className="rounded-2xl p-6 cursor-pointer relative overflow-hidden group"
                 style={{
                   backgroundColor: '#FFFFFF',
                   border: feature.featured ? `2px solid ${feature.accent}` : '1.5px solid #E2E8F0',
@@ -602,7 +1180,7 @@ export default function App() {
                 <div className="icon-box w-12 h-12 rounded-xl flex items-center justify-center mb-5 relative z-10"
                   style={{ backgroundColor: feature.accent + '10', border: `1px solid ${feature.accent}20`, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
                   {/* Swap SVG stroke on hover via filter */}
-                  <div style={{ transition: 'filter 0.3s ease' }}>{feature.svg}</div>
+                  <div className="feature-icon" style={{ transition: 'filter 0.3s ease' }}>{feature.svg}</div>
                 </div>
 
                 <h3 className="card-title" style={{ fontSize: '16px', color: '#0F1F3D', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '10px', lineHeight: 1.3, transition: 'color 0.25s ease' }}>{feature.title}</h3>
@@ -714,38 +1292,61 @@ export default function App() {
           {/* Steps with connector line */}
           <div className="relative">
             {/* Horizontal connector */}
-            <div className="hidden lg:block absolute" style={{ top: '52px', left: 'calc(12.5% + 28px)', right: 'calc(12.5% + 28px)', height: '2px', background: 'linear-gradient(90deg, #0B5ED7, #1E88E5, #10B981, #8B5CF6)', borderRadius: '2px', opacity: 0.3 }}></div>
+            <div data-animate="step-connector" className="hidden lg:block absolute" style={{ top: '52px', left: 'calc(12.5% + 28px)', right: 'calc(12.5% + 28px)', height: '2px', background: 'linear-gradient(90deg, #0B5ED7, #1E88E5, #10B981, #8B5CF6)', borderRadius: '2px', opacity: 0.3 }}></div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { icon: '📥', step: 1, title: 'Lead Created', description: 'Sales rep adds or imports a lead with source, status, and full contact details — in under 30 seconds.', color: '#0B5ED7', bg: '#EBF3FF', tag: 'Day 1' },
-                { icon: '📞', step: 2, title: 'Contacted & Tracked', description: 'Log every call, meeting, and note. Lead status updates automatically with a full timestamped history.', color: '#1E88E5', bg: '#DBEAFE', tag: 'Same Day' },
-                { icon: '⭐', step: 3, title: 'Qualified & Converted', description: 'Convert hot leads into Contacts and Deals with one click — no re-entering data, ever.', color: '#10B981', bg: '#D1FAE5', tag: 'Within Week' },
-                { icon: '🏆', step: 4, title: 'Deal Closed', description: 'Move the deal through custom pipeline stages and celebrate the win — or learn from the loss.', color: '#8B5CF6', bg: '#EDE9FE', tag: 'Result' },
+                {
+                  icon: <UserPlus size={28} strokeWidth={1.8} />,
+                  step: 1, title: 'Lead Created',
+                  description: 'Sales rep adds or imports a lead with source, status, and full contact details — in under 30 seconds.',
+                  color: '#0B5ED7', bg: '#EBF3FF', tag: 'Day 1'
+                },
+                {
+                  icon: <PhoneCall size={28} strokeWidth={1.8} />,
+                  step: 2, title: 'Contacted & Tracked',
+                  description: 'Log every call, meeting, and note. Lead status updates automatically with a full timestamped history.',
+                  color: '#1E88E5', bg: '#DBEAFE', tag: 'Same Day'
+                },
+                {
+                  icon: <Sparkles size={28} strokeWidth={1.8} />,
+                  step: 3, title: 'Qualified & Converted',
+                  description: 'Convert hot leads into Contacts and Deals with one click — no re-entering data, ever.',
+                  color: '#10B981', bg: '#D1FAE5', tag: 'Within Week'
+                },
+                {
+                  icon: <Trophy size={28} strokeWidth={1.8} />,
+                  step: 4, title: 'Deal Closed',
+                  description: 'Move the deal through custom pipeline stages and celebrate the win — or learn from the loss.',
+                  color: '#8B5CF6', bg: '#EDE9FE', tag: 'Result'
+                },
               ].map((step, i) => (
-                <div key={i} className="relative group">
+                <div key={i} data-animate="step" className="relative group">
                   <div className="rounded-2xl p-6 transition-all cursor-pointer h-full"
                     style={{ backgroundColor: '#FFFFFF', border: `1.5px solid ${step.color}20`, boxShadow: '0 4px 16px rgba(0,0,0,0.04)' }}
                     onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 48px ${step.color}22`; e.currentTarget.style.borderColor = step.color + '60'; }}
                     onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.04)'; e.currentTarget.style.borderColor = step.color + '20'; }}
                   >
-                    {/* Step number circle */}
+                    {/* Step number + tag row */}
                     <div className="flex items-center justify-between mb-5">
-                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white font-black text-lg relative z-10"
-                        style={{ background: `linear-gradient(135deg, ${step.color}, ${step.color}CC)`, fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: `0 6px 16px ${step.color}40` }}>
+                      <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-base relative z-10"
+                        style={{ background: `linear-gradient(135deg, ${step.color}, ${step.color}CC)`, fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: `0 4px 12px ${step.color}40` }}>
                         {step.step}
                       </div>
                       <span className="px-2.5 py-1 rounded-full text-xs font-bold" style={{ backgroundColor: step.bg, color: step.color }}>{step.tag}</span>
                     </div>
 
-                    {/* Icon */}
-                    <div className="text-4xl mb-4" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }}>{step.icon}</div>
+                    {/* Lucide Icon */}
+                    <div className="mb-4 w-14 h-14 rounded-2xl flex items-center justify-center"
+                      style={{ backgroundColor: step.bg, color: step.color, boxShadow: `0 4px 14px ${step.color}18` }}>
+                      {step.icon}
+                    </div>
 
                     <h3 style={{ fontSize: '17px', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '10px' }}>{step.title}</h3>
                     <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.7 }}>{step.description}</p>
 
                     {/* Bottom accent bar */}
-                    <div className="mt-5 h-1 rounded-full" style={{ background: `linear-gradient(90deg, ${step.color}, ${step.color}40)`, width: '40px', transition: 'width 0.3s' }}></div>
+                    <div className="mt-5 h-1 rounded-full" style={{ background: `linear-gradient(90deg, ${step.color}, ${step.color}40)`, width: '40px' }}></div>
                   </div>
                 </div>
               ))}
@@ -759,7 +1360,7 @@ export default function App() {
       <section className="bg-white" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           {/* Section header */}
-          <div className="text-center mb-14">
+          <div id="lead-mgmt-header" className="text-center mb-14">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{ backgroundColor: '#FFF7ED', border: '1px solid #FED7AA' }}>
               <span style={{ fontSize: '14px' }}>🎯</span>
               <span style={{ color: '#EA580C', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>LEAD MANAGEMENT</span>
@@ -775,7 +1376,7 @@ export default function App() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
             {/* Left: Enhanced Lead Card */}
-            <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid #E2E8F0', boxShadow: '0 16px 48px rgba(11,94,215,0.1)' }}>
+            <div data-animate="lead-mgmt-card" className="rounded-2xl overflow-hidden" style={{ border: '1px solid #E2E8F0', boxShadow: '0 16px 48px rgba(11,94,215,0.1)' }}>
               {/* Card header */}
               <div className="px-6 py-4 flex items-center justify-between" style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)' }}>
                 <div className="flex items-center gap-3">
@@ -833,7 +1434,10 @@ export default function App() {
 
                 {/* Notes */}
                 <div className="mb-5 p-3 rounded-xl" style={{ backgroundColor: '#FFF7ED', border: '1px solid #FED7AA' }}>
-                  <div style={{ fontSize: '10px', color: '#EA580C', fontWeight: 700, marginBottom: '4px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>📝 Latest Note</div>
+                  <div className="flex items-center gap-1.5 mb-1">
+                    <FileText size={10} style={{ color: '#EA580C' }} />
+                    <span style={{ fontSize: '10px', color: '#EA580C', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Latest Note</span>
+                  </div>
                   <div style={{ fontSize: '13px', color: '#78350F', lineHeight: 1.6 }}>Initial contact made. Interested in enterprise plan. Follow-up call scheduled for Friday.</div>
                 </div>
 
@@ -850,12 +1454,12 @@ export default function App() {
                   <div style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 700, marginBottom: '10px' }}>Activity Log</div>
                   <div className="space-y-2.5">
                     {[
-                      { icon: '📞', text: 'Call logged — follow-up scheduled', time: '2 days ago', color: '#0B5ED7' },
-                      { icon: '✉️', text: 'Email sent — proposal attached', time: '3 days ago', color: '#8B5CF6' },
-                      { icon: '➕', text: 'Lead created from LinkedIn', time: '5 days ago', color: '#10B981' },
+                      { icon: <PhoneCall size={12} />, text: 'Call logged — follow-up scheduled', time: '2 days ago', color: '#0B5ED7' },
+                      { icon: <Mail size={12} />, text: 'Email sent — proposal attached', time: '3 days ago', color: '#8B5CF6' },
+                      { icon: <UserPlus size={12} />, text: 'Lead created from LinkedIn', time: '5 days ago', color: '#10B981' },
                     ].map((act, i) => (
                       <div key={i} className="flex items-start gap-2.5">
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs" style={{ backgroundColor: act.color + '18' }}>{act.icon}</div>
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: act.color + '18', color: act.color }}>{act.icon}</div>
                         <div>
                           <div style={{ fontSize: '12px', color: '#1A1A1A', fontWeight: 500 }}>{act.text}</div>
                           <div style={{ fontSize: '11px', color: '#94A3B8' }}>{act.time}</div>
@@ -871,11 +1475,11 @@ export default function App() {
             <div>
               <div className="space-y-4 mb-8">
                 {[
-                  { icon: '⚡', title: 'Quick lead entry with source tracking', desc: 'Add leads in seconds with pre-set sources like LinkedIn, WhatsApp, referral, and more.' },
-                  { icon: '👤', title: 'Manual or auto lead assignment', desc: 'Assign leads to reps manually, or set rules to auto-assign by source, territory, or rotation.' },
-                  { icon: '📜', title: 'Full activity & status history', desc: 'Every call, email, note, and status change is timestamped and accessible in one timeline.' },
-                  { icon: '🔁', title: 'One-click lead → contact + deal conversion', desc: 'Convert a qualified lead to a Contact and create a linked Deal without re-entering data.' },
-                  { icon: '🔐', title: 'Role-based visibility (Admin vs Sales)', desc: 'Admins see all leads across the team; sales reps only see what\'s assigned to them.' },
+                  { icon: <Zap size={18} style={{ color: '#0B5ED7' }} />, title: 'Quick lead entry with source tracking', desc: 'Add leads in seconds with pre-set sources like LinkedIn, WhatsApp, referral, and more.' },
+                  { icon: <UserCircle size={18} style={{ color: '#0B5ED7' }} />, title: 'Manual or auto lead assignment', desc: 'Assign leads to reps manually, or set rules to auto-assign by source, territory, or rotation.' },
+                  { icon: <History size={18} style={{ color: '#0B5ED7' }} />, title: 'Full activity & status history', desc: 'Every call, email, note, and status change is timestamped and accessible in one timeline.' },
+                  { icon: <GitMerge size={18} style={{ color: '#0B5ED7' }} />, title: 'One-click lead → contact + deal conversion', desc: 'Convert a qualified lead to a Contact and create a linked Deal without re-entering data.' },
+                  { icon: <Lock size={18} style={{ color: '#0B5ED7' }} />, title: 'Role-based visibility (Admin vs Sales)', desc: 'Admins see all leads across the team; sales reps only see what\'s assigned to them.' },
                 ].map((f, i) => (
                   <div key={i} className="flex items-start gap-4 p-4 rounded-2xl transition-all cursor-pointer"
                     style={{ border: '1px solid #E2E8F0', backgroundColor: '#FFFFFF' }}
@@ -883,7 +1487,7 @@ export default function App() {
                     onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2E8F0'; e.currentTarget.style.boxShadow = 'none'; e.currentTarget.style.transform = 'translateX(0)'; }}
                   >
                     <div className="flex-shrink-0 w-10 h-10 rounded-xl flex items-center justify-center" style={{ backgroundColor: '#EBF3FF' }}>
-                      <span style={{ fontSize: '18px' }}>{f.icon}</span>
+                      {f.icon}
                     </div>
                     <div>
                       <div style={{ fontSize: '14px', color: '#1A1A1A', fontWeight: 700, marginBottom: '3px' }}>{f.title}</div>
@@ -896,12 +1500,12 @@ export default function App() {
               {/* Mini stat cards */}
               <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {[
-                  { label: 'Avg. Lead-to-Deal', value: '4.2 days', icon: '⏱️', color: '#0B5ED7' },
-                  { label: 'Conversion Rate', value: '34%', icon: '📈', color: '#10B981' },
-                  { label: 'Leads / Month', value: '1,200+', icon: '🎯', color: '#8B5CF6' },
+                  { label: 'Avg. Lead-to-Deal', value: '4.2 days', icon: <Clock size={20} strokeWidth={1.8} />, color: '#0B5ED7' },
+                  { label: 'Conversion Rate', value: '34%', icon: <TrendingUp size={20} strokeWidth={1.8} />, color: '#10B981' },
+                  { label: 'Leads / Month', value: '1,200+', icon: <Target size={20} strokeWidth={1.8} />, color: '#8B5CF6' },
                 ].map((s, i) => (
                   <div key={i} className="p-3 sm:p-4 rounded-2xl text-center" style={{ background: s.color + '0F', border: `1px solid ${s.color}22` }}>
-                    <div style={{ fontSize: '18px', marginBottom: '3px' }}>{s.icon}</div>
+                    <div className="flex justify-center mb-2" style={{ color: s.color }}>{s.icon}</div>
                     <div style={{ fontSize: '14px', color: s.color, fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800 }}>{s.value}</div>
                     <div style={{ fontSize: '10px', color: '#64748B', marginTop: '2px' }}>{s.label}</div>
                   </div>
@@ -938,29 +1542,31 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             {[
               {
-                icon: '🛡️', title: 'Admin', badge: 'Full Control', badgeColor: '#10B981', badgeBg: '#D1FAE5',
+                icon: <Shield size={22} style={{ color: '#FFFFFF' }} />,
+                title: 'Admin', badge: 'Full Control', badgeColor: '#10B981', badgeBg: '#D1FAE5',
                 gradient: 'linear-gradient(135deg, #0B5ED7 0%, #1565C0 100%)',
                 features: [
-                  { icon: '👥', text: 'Create & manage all users and roles' },
-                  { icon: '🔄', text: 'Configure custom pipeline stages' },
-                  { icon: '📊', text: 'Access all reports and dashboards' },
-                  { icon: '🎯', text: 'Manage lead sources and assignments' },
-                  { icon: '🏢', text: 'Full multi-tenant workspace control' },
+                  { icon: <Users size={15} />, text: 'Create & manage all users and roles' },
+                  { icon: <RefreshCw size={15} />, text: 'Configure custom pipeline stages' },
+                  { icon: <BarChart2 size={15} />, text: 'Access all reports and dashboards' },
+                  { icon: <Target size={15} />, text: 'Manage lead sources and assignments' },
+                  { icon: <Building2 size={15} />, text: 'Full multi-tenant workspace control' },
                 ]
               },
               {
-                icon: '👤', title: 'Sales Rep', badge: 'Daily Workflow', badgeColor: '#1E88E5', badgeBg: '#DBEAFE',
+                icon: <UserCircle size={22} style={{ color: '#FFFFFF' }} />,
+                title: 'Sales Rep', badge: 'Daily Workflow', badgeColor: '#1E88E5', badgeBg: '#DBEAFE',
                 gradient: 'linear-gradient(135deg, #1E88E5 0%, #0B5ED7 100%)',
                 features: [
-                  { icon: '📋', text: 'Manage only assigned leads' },
-                  { icon: '📞', text: 'Log calls, meetings & notes' },
-                  { icon: '💼', text: 'Create and progress deals' },
-                  { icon: '✅', text: 'Complete tasks and follow-ups' },
-                  { icon: '📈', text: 'View personal performance dashboard' },
+                  { icon: <ClipboardList size={15} />, text: 'Manage only assigned leads' },
+                  { icon: <PhoneCall size={15} />, text: 'Log calls, meetings & notes' },
+                  { icon: <Briefcase size={15} />, text: 'Create and progress deals' },
+                  { icon: <CheckSquare size={15} />, text: 'Complete tasks and follow-ups' },
+                  { icon: <Activity size={15} />, text: 'View personal performance dashboard' },
                 ]
               }
             ].map((role, i) => (
-              <div key={i} className="rounded-2xl overflow-hidden transition-all"
+              <div key={i} data-animate="why-item" className="rounded-2xl overflow-hidden transition-all"
                 style={{ border: '1px solid #E2E8F0', boxShadow: '0 4px 20px rgba(0,0,0,0.06)' }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-5px)'; e.currentTarget.style.boxShadow = '0 20px 48px rgba(11,94,215,0.14)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.06)'; }}
@@ -968,7 +1574,7 @@ export default function App() {
                 {/* Card header */}
                 <div className="px-5 sm:px-7 py-4 sm:py-5 flex items-center justify-between flex-wrap gap-2" style={{ background: role.gradient }}>
                   <div className="flex items-center gap-3">
-                    <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)', fontSize: '22px' }}>{role.icon}</div>
+                    <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>{role.icon}</div>
                     <div>
                       <div style={{ color: '#FFFFFF', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '20px' }}>{role.title}</div>
                       <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>Role-based access</div>
@@ -985,7 +1591,7 @@ export default function App() {
                         onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#EBF3FF'; }}
                         onMouseLeave={e => { e.currentTarget.style.backgroundColor = '#F8FAFC'; }}
                       >
-                        <span style={{ fontSize: '16px' }}>{f.icon}</span>
+                        <div style={{ color: '#0B5ED7', flexShrink: 0 }}>{f.icon}</div>
                         <span style={{ fontSize: '14px', color: '#374151', fontWeight: 500 }}>{f.text}</span>
                       </div>
                     ))}
@@ -998,16 +1604,18 @@ export default function App() {
           {/* Bottom: Advantage pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
             {[
-              { icon: '⚡', title: 'Lightning Fast Setup', desc: 'Go from sign-up to first lead entered in under 10 minutes. No IT team needed.', color: '#F59E0B', bg: '#FFF7ED', border: '#FED7AA' },
-              { icon: '🔒', title: 'Enterprise Security', desc: 'AES-256 encryption, TLS 1.3, ISO 27001 infrastructure and GDPR-ready out of the box.', color: '#0B5ED7', bg: '#EBF3FF', border: '#C7DFFE' },
-              { icon: '📱', title: 'Works Everywhere', desc: 'Browser-based and fully responsive. Works seamlessly on desktop, tablet, and mobile.', color: '#10B981', bg: '#F0FDF4', border: '#BBF7D0' },
+              { icon: <Zap size={22} style={{ color: '#F59E0B' }} />, title: 'Lightning Fast Setup', desc: 'Go from sign-up to first lead entered in under 10 minutes. No IT team needed.', color: '#F59E0B', bg: '#FFF7ED', border: '#FED7AA' },
+              { icon: <Shield size={22} style={{ color: '#0B5ED7' }} />, title: 'Enterprise Security', desc: 'AES-256 encryption, TLS 1.3, ISO 27001 infrastructure and GDPR-ready out of the box.', color: '#0B5ED7', bg: '#EBF3FF', border: '#C7DFFE' },
+              { icon: <Smartphone size={22} style={{ color: '#10B981' }} />, title: 'Works Everywhere', desc: 'Browser-based and fully responsive. Works seamlessly on desktop, tablet, and mobile.', color: '#10B981', bg: '#F0FDF4', border: '#BBF7D0' },
             ].map((p, i) => (
-              <div key={i} className="p-6 rounded-2xl flex gap-4 transition-all"
+              <div key={i} data-animate="why-item" className="p-6 rounded-2xl flex gap-4 transition-all"
                 style={{ backgroundColor: p.bg, border: `1px solid ${p.border}` }}
                 onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = `0 12px 32px ${p.color}18`; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
-                <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 text-2xl" style={{ backgroundColor: '#FFFFFF', boxShadow: `0 4px 12px ${p.color}22` }}>{p.icon}</div>
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#FFFFFF', boxShadow: `0 4px 12px ${p.color}22` }}>
+                  {p.icon}
+                </div>
                 <div>
                   <h4 style={{ fontSize: '15px', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '6px' }}>{p.title}</h4>
                   <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.65 }}>{p.desc}</p>
@@ -1055,7 +1663,7 @@ export default function App() {
       <section className="bg-white" style={{ paddingTop: '60px', paddingBottom: '60px' }}>
         <div className="max-w-[1200px] mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
-            <div>
+            <div id="integration-header">
               <div className="inline-flex items-center px-4 py-2 rounded-full mb-6" style={{ backgroundColor: '#EBF3FF' }}>
                 <span style={{ color: '#0B5ED7', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>INTEGRATIONS</span>
               </div>
@@ -1067,7 +1675,7 @@ export default function App() {
               </p>
               <div className="space-y-3">
                 {['Native Zapier & Make (formerly Integromat) support', 'Two-way Gmail & Outlook sync', 'Slack notifications for deal updates', 'REST API for custom integrations'].map((f, i) => (
-                  <div key={i} className="flex items-center gap-3">
+                  <div key={i} data-animate="integration-feature" className="flex items-center gap-3">
                     <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: '#EBF3FF' }}>
                       <Check style={{ width: '12px', height: '12px', color: '#0B5ED7' }} />
                     </div>
@@ -1086,7 +1694,7 @@ export default function App() {
             <div>
               <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-3">
                 {integrations.map((int, i) => (
-                  <div key={i} className="p-4 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all cursor-pointer"
+                  <div key={i} data-animate="integration-card" className="p-4 rounded-2xl flex flex-col items-center justify-center gap-2 transition-all cursor-pointer"
                     style={{ backgroundColor: '#F5F7FA', border: '1px solid #E2E8F0' }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = '#0B5ED7'; e.currentTarget.style.backgroundColor = '#EBF3FF'; e.currentTarget.style.transform = 'scale(1.05)'; }}
                     onMouseLeave={e => { e.currentTarget.style.borderColor = '#E2E8F0'; e.currentTarget.style.backgroundColor = '#F5F7FA'; e.currentTarget.style.transform = 'scale(1)'; }}
@@ -1122,31 +1730,35 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {[
               {
-                icon: '🚀', name: 'Starter', tagline: 'Perfect for small sales teams kicking off',
+                icon: <Rocket size={22} strokeWidth={1.8} />,
+                name: 'Starter', tagline: 'Perfect for small sales teams kicking off',
                 price: '₹999', unit: '/month', min: 'Up to 3 users', billing: 'Billed Monthly',
                 cta: 'Get Started Free', ctaStyle: 'outline', accent: '#0B8A6E',
                 features: ['Up to 3 users', 'Up to 500 leads', 'Lead & contact management', 'Basic pipeline (3 stages)', 'Task & follow-up reminders', 'Activity logging', 'Email support'],
               },
               {
-                icon: '⚡', name: 'Growth', tagline: 'For growing sales teams closing more deals',
+                icon: <Zap size={22} strokeWidth={1.8} />,
+                name: 'Growth', tagline: 'For growing sales teams closing more deals',
                 price: '₹2,999', unit: '/month', min: 'Up to 10 users', billing: 'Billed Monthly',
                 cta: 'Start Free Trial', ctaStyle: 'dark', accent: '#0B5ED7', popular: true,
                 features: ['Up to 10 users', 'Unlimited leads', 'Full pipeline with custom stages', 'Dashboard & sales reports', 'Lead source tracking', 'Role-based access (Admin & Rep)', 'Deal management', 'Email & task notifications', 'Data export (CSV)', 'Priority email support'],
               },
               {
-                icon: '🏢', name: 'Pro', tagline: 'For established teams needing full control',
+                icon: <Building2 size={22} strokeWidth={1.8} />,
+                name: 'Pro', tagline: 'For established teams needing full control',
                 price: '₹5,999', unit: '/month', min: 'Up to 25 users', billing: 'Billed Monthly',
                 cta: 'Upgrade to Pro', ctaStyle: 'teal', accent: '#0B8A6E',
                 features: ['Up to 25 users', 'Unlimited leads & deals', 'Everything in Growth', 'Advanced analytics & KPIs', 'Multi-pipeline support', 'Lead assignment automation', 'Activity timeline per lead', 'Bulk lead import/export', 'Custom fields & tags', 'Dedicated onboarding call'],
               },
               {
-                icon: '👑', name: 'Enterprise', tagline: 'For large orgs & multi-team deployments',
+                icon: <Crown size={22} strokeWidth={1.8} />,
+                name: 'Enterprise', tagline: 'For large orgs & multi-team deployments',
                 price: 'Custom', unit: '', min: '25+ users', billing: 'Billed Annually',
                 cta: 'Contact Sales', ctaStyle: 'dark', accent: '#0B5ED7', customQuote: true,
                 features: ['Unlimited users', 'Multi-tenant workspaces', 'Super admin dashboard', 'Custom integrations & API access', 'SSO & advanced security', 'Custom roles & permissions', 'SLA & uptime guarantee', 'Dedicated success manager', 'White-label options available'],
               },
             ].map((plan, i) => (
-              <div key={i} className={`rounded-2xl bg-white relative flex flex-col transition-all${plan.popular ? ' mt-6 md:mt-6' : ''}`}
+              <div key={i} data-animate="pricing-card" className={`rounded-2xl bg-white relative flex flex-col transition-all${plan.popular ? ' mt-6 md:mt-6' : ''}`}
                 style={{
                   border: plan.popular ? `2px solid #0B5ED7` : '1.5px solid #E2E8F0',
                   boxShadow: plan.popular ? '0 16px 48px rgba(11,94,215,0.15)' : '0 2px 12px rgba(0,0,0,0.04)',
@@ -1157,14 +1769,14 @@ export default function App() {
                 {/* Most Popular badge */}
                 {plan.popular && (
                   <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1.5 rounded-full flex items-center gap-1.5" style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', boxShadow: '0 4px 14px rgba(11,94,215,0.35)' }}>
-                    <span style={{ fontSize: '12px' }}>⚡</span>
+                    <Zap size={12} color="#FFFFFF" />
                     <span style={{ color: '#FFFFFF', fontSize: '12px', fontWeight: 700, whiteSpace: 'nowrap' }}>Most Popular</span>
                   </div>
                 )}
 
                 <div className="p-6 flex-1">
                   {/* Icon */}
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-xl" style={{ backgroundColor: plan.accent + '15', border: `1px solid ${plan.accent}25` }}>{plan.icon}</div>
+                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style={{ backgroundColor: plan.accent + '15', border: `1px solid ${plan.accent}25`, color: plan.accent }}>{plan.icon}</div>
 
                   {/* Name & tagline */}
                   <h3 style={{ fontSize: '18px', color: '#0F1F3D', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '4px' }}>{plan.name}</h3>
@@ -1185,7 +1797,7 @@ export default function App() {
 
                   {/* Billing badge */}
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full mb-5" style={{ backgroundColor: '#EBF3FF', border: '1px solid #C7DFFE' }}>
-                    <span style={{ fontSize: '11px' }}>🗓️</span>
+                    <Calendar size={11} style={{ color: '#0B5ED7' }} />
                     <span style={{ fontSize: '11px', color: '#0B5ED7', fontWeight: 600 }}>{plan.billing}</span>
                   </div>
 
@@ -1225,7 +1837,7 @@ export default function App() {
         <div className="max-w-[900px] mx-auto px-4 sm:px-6">
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-4" style={{ backgroundColor: '#EBF3FF', border: '1px solid #C7DFFE' }}>
-              <span style={{ fontSize: '14px' }}>⚙️</span>
+              <Settings2 size={13} style={{ color: '#0B5ED7' }} />
               <span style={{ color: '#0B5ED7', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>FAQ</span>
             </div>
             <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.2, marginBottom: '12px' }}>
@@ -1258,7 +1870,7 @@ export default function App() {
                     {category.items.map((faq, fi) => {
                       const key = `${ci}-${fi}`;
                       return (
-                        <div key={fi} className="rounded-xl overflow-hidden"
+                        <div key={fi} data-animate="faq-item" className="rounded-xl overflow-hidden"
                           style={{ backgroundColor: '#F8FAFC', border: openFaq === key ? '1.5px solid #1E88E5' : '1px solid #E2E8F0' }}
                         >
                           <button className="w-full px-4 sm:px-5 py-4 flex items-center justify-between text-left"
