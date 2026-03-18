@@ -585,6 +585,202 @@ function useFullPageAnimations() {
   }, []);
 }
 
+// ── GSAP Typewriter Loader — Premium Edition ────────────────────────────────
+function GSAPTypewriterLoader() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const glowRef      = useRef<HTMLDivElement>(null);
+  const poweredRef   = useRef<HTMLSpanElement>(null);
+  const brandRef     = useRef<HTMLSpanElement>(null);
+  const cursorRef    = useRef<HTMLSpanElement>(null);
+  const lineRef      = useRef<HTMLDivElement>(null);
+  const taglineRef   = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const POWERED = 'Powered by ';
+    const BRAND   = 'Averlon';
+
+    if (poweredRef.current) poweredRef.current.textContent = '';
+    if (brandRef.current)   brandRef.current.textContent   = '';
+
+    const tl = gsap.timeline({ defaults: { ease: 'none' } });
+
+    // 1. Slow, elegant fade-in of entire screen
+    tl.fromTo(containerRef.current,
+      { opacity: 0 },
+      { opacity: 1, duration: 0.6, ease: 'power2.inOut' }
+    );
+
+    // 2. Glow slowly blooms
+    tl.fromTo(glowRef.current,
+      { opacity: 0, scale: 0.6 },
+      { opacity: 1, scale: 1, duration: 0.9, ease: 'power2.out' },
+      '-=0.4'
+    );
+
+    // 3. Underline sweeps in
+    tl.fromTo(lineRef.current,
+      { scaleX: 0 },
+      { scaleX: 1, duration: 0.7, ease: 'power3.inOut' },
+      '-=0.7'
+    );
+
+    // 4. Type "Powered by " — crisp cadence
+    POWERED.split('').forEach((char) => {
+      tl.call(() => {
+        if (poweredRef.current) poweredRef.current.textContent += char;
+      }, [], '+=0.055');
+    });
+
+    // 5. Pause — let reader absorb the phrase
+    tl.call(() => {}, [], '+=0.2');
+
+    // 6. Type "Averlon" — slightly slower for weight
+    BRAND.split('').forEach((char) => {
+      tl.call(() => {
+        if (brandRef.current) brandRef.current.textContent += char;
+      }, [], '+=0.08');
+    });
+
+    // 7. Tagline fades up after brand name completes
+    tl.fromTo(taglineRef.current,
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, duration: 0.6, ease: 'power2.out' },
+      '+=0.25'
+    );
+
+    // 8. Cursor blinks gracefully then fades
+    tl.to(cursorRef.current,
+      { opacity: 0, duration: 0.3, ease: 'power1.inOut', repeat: 3, yoyo: true },
+      '+=0.3'
+    );
+
+    // 9. Everything fades out — smooth
+    tl.to(containerRef.current,
+      { opacity: 0, duration: 0.7, ease: 'power2.inOut' },
+      '+=0.2'
+    );
+
+    return () => { tl.kill(); };
+  }, []);
+
+  return (
+    <div
+      ref={containerRef}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        background: 'linear-gradient(135deg, #060D1A 0%, #0B1628 50%, #0D1F3C 100%)',
+        opacity: 0,
+      }}
+    >
+      {/* Ambient glow — large, soft, centered */}
+      <div ref={glowRef} style={{
+        position: 'absolute',
+        width: '700px',
+        height: '400px',
+        borderRadius: '50%',
+        background: 'radial-gradient(ellipse, rgba(11,94,215,0.12) 0%, rgba(30,136,229,0.05) 40%, transparent 70%)',
+        pointerEvents: 'none',
+        filter: 'blur(20px)',
+      }} />
+
+      {/* Secondary warm glow — bottom right */}
+      <div style={{
+        position: 'absolute',
+        bottom: '20%',
+        right: '20%',
+        width: '300px',
+        height: '200px',
+        borderRadius: '50%',
+        background: 'radial-gradient(ellipse, rgba(96,165,250,0.06) 0%, transparent 70%)',
+        pointerEvents: 'none',
+        filter: 'blur(30px)',
+      }} />
+
+      {/* Main content */}
+      <div style={{ position: 'relative', textAlign: 'center', padding: '0 24px' }}>
+
+        {/* Main typewriter line */}
+        <div style={{
+          fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif",
+          fontSize: 'clamp(24px, 3.5vw, 42px)',
+          fontWeight: 300,
+          letterSpacing: '0.06em',
+          lineHeight: 1.3,
+          whiteSpace: 'nowrap',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+          {/* "Powered by" — light, airy weight */}
+          <span ref={poweredRef} style={{
+            color: '#475569',
+            fontWeight: 300,
+            letterSpacing: '0.08em',
+          }} />
+
+          {/* "Averlon" — vivid gradient, heavier weight */}
+          <span ref={brandRef} style={{
+            background: 'linear-gradient(135deg, #93C5FD 0%, #DBEAFE 50%, #FFFFFF 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            fontWeight: 700,
+            letterSpacing: '0.04em',
+          }} />
+
+          {/* Cursor — thin, elegant */}
+          <span ref={cursorRef} style={{
+            display: 'inline-block',
+            width: '1.5px',
+            height: '0.9em',
+            backgroundColor: '#60A5FA',
+            marginLeft: '4px',
+            verticalAlign: 'middle',
+            borderRadius: '1px',
+            boxShadow: '0 0 8px rgba(96,165,250,0.6)',
+            animation: 'premiumBlink 1.1s ease-in-out infinite',
+          }} />
+        </div>
+
+        {/* Animated underline — gradient, centered */}
+        <div ref={lineRef} style={{
+          marginTop: '16px',
+          height: '1px',
+          background: 'linear-gradient(90deg, transparent 0%, rgba(96,165,250,0.3) 20%, rgba(147,197,253,0.7) 50%, rgba(96,165,250,0.3) 80%, transparent 100%)',
+          transform: 'scaleX(0)',
+          transformOrigin: 'center',
+        }} />
+
+        {/* Tagline — appears after typing finishes */}
+        <p ref={taglineRef} style={{
+          marginTop: '20px',
+          fontSize: 'clamp(11px, 1.2vw, 13px)',
+          color: '#1E3A5F',
+          letterSpacing: '0.25em',
+          textTransform: 'uppercase',
+          fontWeight: 500,
+          opacity: 0,
+          fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif",
+        }}>
+          Empowering sales teams worldwide
+        </p>
+      </div>
+
+      <style>{`
+        @keyframes premiumBlink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+      `}</style>
+    </div>
+  );
+}
+
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [billingPeriod, setBillingPeriod] = useState<'monthly' | 'annual'>('monthly');
@@ -593,9 +789,9 @@ export default function App() {
   const [activeFaqCategory, setActiveFaqCategory] = useState(0);
   const [legalModal, setLegalModal] = useState<string | null>(null);
 
-  // Simulate loading and hide after component mounts
+  // Hide loader after premium GSAP animation completes (~3.2s)
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 2500);
+    const timer = setTimeout(() => setLoading(false), 3200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -716,83 +912,7 @@ export default function App() {
     <div className="min-h-screen" style={{ fontFamily: 'Inter, sans-serif', backgroundColor: '#FFFFFF' }}>
 
       {/* LOADING SCREEN */}
-      {loading && (
-        <div style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 9999,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#FFFFFF',
-          animation: 'fadeOut 0.8s ease-out forwards',
-          animationDelay: '1.7s'
-        }}>
-          <style>{`
-            @keyframes fadeOut {
-              0% { opacity: 1; }
-              100% { opacity: 0; pointer-events: none; }
-            }
-            @keyframes slideInDown {
-              0% { opacity: 0; transform: translateY(-30px); }
-              100% { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes slideInUp {
-              0% { opacity: 0; transform: translateY(30px); }
-              100% { opacity: 1; transform: translateY(0); }
-            }
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-            .loading-logo { animation: slideInDown 0.8s ease-out; }
-            .loading-text { animation: slideInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
-            .loading-spinner { animation: spin 2s linear infinite; }
-          `}</style>
-
-          {/* Loading Logo */}
-          <div className="loading-logo" >
-            <div style={{
-              width: '160px',
-              height: '160px',
-              borderRadius: '20px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
-            }}>
-              <img 
-                src={logoImage} 
-                alt="Averlon World Logo"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'contain',
-                  borderRadius: '12px'
-                }}
-              />
-            </div>
-          </div>
-
-          {/* Loading Text */}
-          <div className="loading-text" style={{ textAlign: 'center', marginBottom: '40px' }}>
-            <p style={{
-              fontSize: '22px',
-              color: '#64748B',
-              fontWeight: 500,
-              marginLeft: '4px',
-              marginTop: '-26px'
-            }}>
-              Powered by Averlon
-            </p>
-          </div>
-
-          
-
-          
-          
-        </div>
-      )}
+      {loading && <GSAPTypewriterLoader />}
 
       {/* NAVBAR */}
       <nav className="sticky top-0 z-50 bg-white" style={{ borderBottom: '1px solid #E2E8F0', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
