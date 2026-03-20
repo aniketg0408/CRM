@@ -119,21 +119,22 @@ function useHeroAnimation() {
 // Full Page Scroll Animations Hook
 function useFullPageAnimations() {
   useEffect(() => {
-    // Features section cards - ADVANCED multi-effect animations
+    // Features section cards - Row 1 slides in from LEFT, Row 2 slides in from RIGHT
     const featureCards = document.querySelectorAll('[data-animate="feature-card"]');
     featureCards.forEach((card, index) => {
-      // OPTION 1: STAGGERED SLIDE UP (Default - Active)
-      gsap.set(card, { opacity: 1, y: 60, x: 0, scale: 1 });
+      // Row 1: slide in from left with stagger
+      gsap.set(card, { opacity: 0, x: -120, y: 30 });
       gsap.to(card, {
         scrollTrigger: {
           trigger: card,
-          start: 'top 85%',
-          end: 'top 55%',
-          scrub: 0.3,
+          start: 'top 88%',
+          end: 'top 52%',
+          scrub: 0.4,
         },
+        x: 0,
         y: 0,
         opacity: 1,
-        ease: 'power2.out',
+        ease: 'power3.out',
         delay: index * 0.08
       });
 
@@ -144,8 +145,8 @@ function useFullPageAnimations() {
         gsap.to(icon, {
           scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
-            end: 'top 55%',
+            start: 'top 88%',
+            end: 'top 52%',
             scrub: 0.3,
           },
           rotation: 360,
@@ -155,42 +156,44 @@ function useFullPageAnimations() {
         });
       }
 
-      // OPTION 2: STAGGERED SCALE WITH TILT (Uncomment to use)
-      /*
-      gsap.set(card, { opacity: 1, scale: 0.85, y: 40, rotationY: 15 });
+    });
+
+    // Row 2: slide in from RIGHT with stagger
+    const featureCardsRow2 = document.querySelectorAll('[data-animate="feature-card-row2"]');
+    featureCardsRow2.forEach((card, index) => {
+      gsap.set(card, { opacity: 0, x: 120, y: 30 });
       gsap.to(card, {
         scrollTrigger: {
           trigger: card,
-          start: 'top 85%',
-          end: 'top 55%',
+          start: 'top 88%',
+          end: 'top 52%',
           scrub: 0.4,
         },
-        scale: 1,
-        y: 0,
-        rotationY: 0,
-        opacity: 1,
-        ease: 'back.out',
-        delay: index * 0.1
-      });
-      */
-
-      // OPTION 3: STAGGERED FLIP ENTRANCE (Uncomment to use)
-      /*
-      gsap.set(card, { opacity: 1, rotationX: 90, y: 40, transformPerspective: 1000 });
-      gsap.to(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',
-          end: 'top 55%',
-          scrub: 0.5,
-        },
-        rotationX: 0,
+        x: 0,
         y: 0,
         opacity: 1,
         ease: 'power3.out',
-        delay: index * 0.12
+        delay: index * 0.08
       });
-      */
+
+      // Bonus: Icon animation for row 2
+      const icon = card.querySelector('.feature-icon');
+      if (icon) {
+        gsap.set(icon, { rotation: 0, scale: 1 });
+        gsap.to(icon, {
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 88%',
+            end: 'top 52%',
+            scrub: 0.3,
+          },
+          rotation: -360,
+          scale: 1.1,
+          ease: 'none',
+          delay: index * 0.08
+        });
+      }
+
     });
 
     // How-it-works steps - ADVANCED scroll animations (multiple options)
@@ -1437,7 +1440,7 @@ export default function App() {
                 accent: '#D97706',
               },
             ].map((feature, i) => (
-              <div key={i} className="rounded-2xl p-6 cursor-pointer relative overflow-hidden"
+              <div key={i} data-animate="feature-card-row2" className="rounded-2xl p-6 cursor-pointer relative overflow-hidden"
                 style={{
                   backgroundColor: '#FFFFFF',
                   border: '1.5px solid #E2E8F0',
@@ -1477,7 +1480,7 @@ export default function App() {
 
                 <div className="icon-box w-12 h-12 rounded-xl flex items-center justify-center mb-5 relative z-10"
                   style={{ backgroundColor: feature.accent + '10', border: `1px solid ${feature.accent}20`, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
-                  {feature.svg}
+                  <div className="feature-icon" style={{ transition: 'filter 0.3s ease' }}>{feature.svg}</div>
                 </div>
 
                 <h3 className="card-title" style={{ fontSize: '16px', color: '#0F1F3D', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '10px', lineHeight: 1.3, transition: 'color 0.25s ease' }}>{feature.title}</h3>
