@@ -770,7 +770,7 @@ function GSAPTypewriterLoader() {
           opacity: 0,
           fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif",
         }}>
-          Empowering sales teams worldwide
+          Empowering Businesses with Strength
         </p>
       </div>
 
@@ -794,7 +794,7 @@ export default function App() {
 
   // Hide loader after premium GSAP animation completes (~3.2s)
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 3200);
+    const timer = setTimeout(() => setLoading(false), 4200);
     return () => clearTimeout(timer);
   }, []);
 
@@ -2259,10 +2259,7 @@ export default function App() {
               <p style={{ color: '#8B92B0', fontSize: '13px', lineHeight: 1.75, marginBottom: '18px', maxWidth: '260px' }}>
                 All-in-one CRM for modern sales teams. From lead to closed deal — in one system.
               </p>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full" style={{ backgroundColor: 'rgba(11,94,215,0.15)', border: '1px solid rgba(11,94,215,0.4)' }}>
-                <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ backgroundColor: '#10B981' }}></div>
-                <span style={{ color: '#7DB8F7', fontSize: '11px', fontWeight: 600 }}>Now in Early Access</span>
-              </div>
+              
             </div>
 
             {/* Product links */}
@@ -2336,7 +2333,7 @@ export default function App() {
                   <div className="mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(11,94,215,0.2)' }}>
                     <MapPin size={13} style={{ color: '#7DB8F7' }} />
                   </div>
-                  <span style={{ color: '#8B92B0', fontSize: '13px', lineHeight: 1.6 }}>Thane, Maharashtra<br />India — 400604</span>
+                  <span style={{ color: '#8B92B0', fontSize: '13px', lineHeight: 1.6 }}>5th Floor, Lodha Supremus II, Unit No. A-533/A-507, Wagle Industrial Estate, Thane West, Maharashtra<br />India — 400604</span>
                 </li>
               </ul>
             </div>
@@ -2348,10 +2345,10 @@ export default function App() {
 
           {/* Bottom bar */}
           <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-            <p style={{ color: '#5A6080', fontSize: '12px', textAlign: 'center' }}>© 2025 CRM by Averlon. All rights reserved.</p>
-            <p style={{ color: '#5A6080', fontSize: '12px' }}>
+            <p style={{ color: 'white', fontSize: '12px', textAlign: 'center' }}>© 2025 CRM by Averlon. All rights reserved.</p>
+            <p style={{ color: 'white', fontSize: '12px' }}>
               Powered by{' '}
-              <span style={{ color: '#C4C9DD', fontWeight: 600 }}>Averlon</span>
+              <span style={{ color: 'white', fontWeight: 600 }}>Averlon</span>
             </p>
           </div>
 
