@@ -228,7 +228,7 @@ export function PricingSection() {
   const ctaLabel = (plan: Plan) => {
     if (plan.isEnterprise) return "Contact Sales";
     if (plan.id === "starter") return "Get Started Free";
-    return currentUser ? "Buy Now" : "Start Free Trial";
+    return currentUser ? "Buy Now" : "Buy Now";
   };
 
   return (
