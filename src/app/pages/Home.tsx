@@ -1707,13 +1707,7 @@ export default function App() {
                   </div>
                 ))}
               </div>
-              <button className="mt-8 px-6 py-3 rounded-xl flex items-center gap-2 transition-all"
-                style={{ border: '1.5px solid #0B5ED7', color: '#0B5ED7', fontWeight: 600, fontSize: '15px' }}
-                onMouseEnter={e => { e.currentTarget.style.backgroundColor = '#EBF3FF'; }}
-                onMouseLeave={e => { e.currentTarget.style.backgroundColor = 'transparent'; }}
-              >
-                View all integrations <ArrowRight size={16} />
-              </button>
+              
             </div>
             <div>
               <div className="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 gap-3">
