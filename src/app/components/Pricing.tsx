@@ -19,7 +19,6 @@ import {
   Crown,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 
 // ── Auth helper ──────────────────────────────────────────────────────────────
 function getStoredUser(): { name: string; email: string; hasActiveLicense: boolean } | null {
@@ -208,21 +207,9 @@ export function PricingSection() {
       navigate("/contact-support");
       return;
     }
-    const user = getStoredUser();
-    if (user) {
-      navigate("/checkout", {
-        state: { selectedPlanId: plan.id, planName: plan.name, price: plan.price, min: plan.min },
-      });
-    } else {
-      toast.info("Please log in to continue with your purchase.");
-      navigate("/", {
-        state: {
-          openLogin: true,
-          redirectTo: "/checkout",
-          checkoutState: { selectedPlanId: plan.id, planName: plan.name, price: plan.price, min: plan.min },
-        },
-      });
-    }
+    navigate("/checkout", {
+      state: { selectedPlanId: plan.id, planName: plan.name, price: plan.price, min: plan.min },
+    });
   };
 
   const ctaLabel = (plan: Plan) => {

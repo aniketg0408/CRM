@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   X, Check, CreditCard, Shield, Lock, Zap, Star,
   ArrowLeft, Rocket, Building2, Crown, Users, Calendar,
@@ -137,13 +137,7 @@ export default function Checkout() {
   const userEmail = user?.email || null;
   const userName  = user?.name  || "";
 
-  // Auth guard
-  useEffect(() => {
-    if (!userEmail) {
-      toast.info("Please log in to continue.");
-      navigate("/");
-    }
-  }, []);
+
 
   const initialPlanId = state.selectedPlanId && PLANS.find(p => p.id === state.selectedPlanId)
     ? state.selectedPlanId
@@ -225,8 +219,6 @@ export default function Checkout() {
   // ── Input style helpers ───────────────────────────────────────────────────
   const inp = "w-full px-4 py-2.5 bg-[#F8FAFC] border border-[#E2E8F0] rounded-xl text-[#0F1F3D] placeholder-[#94A3B8] text-sm focus:outline-none focus:ring-2 focus:ring-[#0B5ED7] focus:border-transparent focus:bg-white transition-all duration-200";
   const lbl = "block text-[11px] font-bold text-[#475569] uppercase tracking-widest mb-1.5";
-
-  if (!userEmail) return null;
 
   return (
     <>
