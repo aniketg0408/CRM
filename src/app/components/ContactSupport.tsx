@@ -171,7 +171,7 @@ export function ContactSupport() {
       border: "rgba(5,150,105,0.15)",
       iconBg: "rgba(5,150,105,0.10)",
       details: [
-        { Icon: MapPin, label: "Address", value: "5th Floor, Lodha Supremus II, Unit No. A-533/A-507, Wagle Industrial Estate, Thane West, Maharashtra 400604" },
+        { Icon: MapPin, label: "Address", value: "5th Floor, Lodha Supremus II, Unit No. A-533/A-515, Wagle Industrial Estate, Thane West, Maharashtra 400604" },
       ],
     },
   ];

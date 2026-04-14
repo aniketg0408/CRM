@@ -98,7 +98,7 @@ export default function Footer({ onNavClick, onLegalClick }: FooterProps) {
                   <MapPin size={13} style={{ color: '#7DB8F7' }} />
                 </div>
                 <span style={{ color: '#8B92B0', fontSize: '13px', lineHeight: 1.6 }}>
-                  5th Floor, Lodha Supremus II, Unit No. A-533/A-507, Wagle Industrial Estate, Thane West, Maharashtra<br />India — 400604
+                  5th Floor, Lodha Supremus II, Unit No. A-533/A-515, Wagle Industrial Estate, Thane West, Maharashtra<br />India — 400604
                 </span>
               </li>
             </ul>
