@@ -9,6 +9,9 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+const MIDDLEWARE_URL = "https://email-middleware-qyrt.onrender.com";
+const API_KEY = "averlon-mail-2026!";
+
 export function ContactSupport() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -21,18 +24,18 @@ export function ContactSupport() {
   const [submitted, setSubmitted] = useState(false);
   const [focused, setFocused]     = useState<string | null>(null);
 
-useEffect(() => {
-  const params = new URLSearchParams(location.search);
-  const type = params.get("type");
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const type = params.get("type");
 
-  if (type === "demo") {
-    setFormData((prev) => ({
-      ...prev,
-      inquiryType: "demo",
-      subject: "Demo Request",
-    }));
-  }
-}, [location.search]);
+    if (type === "demo") {
+      setFormData((prev) => ({
+        ...prev,
+        inquiryType: "demo",
+        subject: "Demo Request",
+      }));
+    }
+  }, [location.search]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -41,25 +44,93 @@ useEffect(() => {
   const handleClear = () =>
     setFormData({ fullName: "", email: "", phone: "", company: "", inquiryType: "", subject: "", message: "" });
 
-  // ── TODO: wire up your API / EmailJS here ──
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // TODO: add emailjs + createCustomerSupport calls
-    await new Promise((r) => setTimeout(r, 1200)); // remove this placeholder delay
-    setLoading(false);
-    setSubmitted(true);
-    handleClear();
+
+    try {
+      const inquiryLabel =
+        inquiryOptions.find((o) => o.value === formData.inquiryType)?.label ??
+        formData.inquiryType;
+
+      // ── 1. Notify the support team ──────────────────────────────────────
+      await fetch(`${MIDDLEWARE_URL}/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": API_KEY,
+        },
+        body: JSON.stringify({
+          to: "info@averlonworld.com",
+          subject: `[CRM Support] ${formData.subject} — ${inquiryLabel}`,
+          html: `
+            <div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;color:#1A1A1A">
+              <h2 style="margin:0 0 16px;font-size:20px">New support enquiry</h2>
+              <table style="width:100%;border-collapse:collapse;font-size:14px">
+                <tr><td style="padding:8px 12px;background:#F8FAFC;font-weight:600;width:140px">Name</td>
+                    <td style="padding:8px 12px">${formData.fullName}</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600">Email</td>
+                    <td style="padding:8px 12px">${formData.email}</td></tr>
+                <tr><td style="padding:8px 12px;background:#F8FAFC;font-weight:600">Phone</td>
+                    <td style="padding:8px 12px">${formData.phone || "—"}</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600">Company</td>
+                    <td style="padding:8px 12px">${formData.company || "—"}</td></tr>
+                <tr><td style="padding:8px 12px;background:#F8FAFC;font-weight:600">Type</td>
+                    <td style="padding:8px 12px">${inquiryLabel}</td></tr>
+                <tr><td style="padding:8px 12px;font-weight:600">Subject</td>
+                    <td style="padding:8px 12px">${formData.subject}</td></tr>
+                <tr><td style="padding:8px 12px;background:#F8FAFC;font-weight:600;vertical-align:top">Message</td>
+                    <td style="padding:8px 12px;white-space:pre-wrap">${formData.message}</td></tr>
+              </table>
+            </div>`,
+        }),
+      });
+
+      // ── 2. Confirm receipt to the user ──────────────────────────────────
+      await fetch(`${MIDDLEWARE_URL}/send-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": API_KEY,
+        },
+        body: JSON.stringify({
+          to: formData.email,
+          subject: "We received your message — Averlon CRM Support",
+          html: `
+            <div style="font-family:Inter,sans-serif;max-width:560px;margin:0 auto;color:#1A1A1A">
+              <h2 style="margin:0 0 8px;font-size:20px">Hi ${formData.fullName},</h2>
+              <p style="margin:0 0 16px;font-size:14px;color:#374151;line-height:1.65">
+                Thanks for reaching out! We've received your enquiry and our team will
+                get back to you within <strong>24 hours</strong>.
+              </p>
+              <div style="background:#F8FAFC;border-left:3px solid #0B5ED7;padding:12px 16px;border-radius:4px;font-size:13px;color:#374151">
+                <strong>Subject:</strong> ${formData.subject}<br/>
+                <strong>Type:</strong> ${inquiryLabel}
+              </div>
+              <p style="margin:20px 0 0;font-size:13px;color:#94A3B8">
+                — Averlon CRM Support Team<br/>
+                <a href="mailto:info@averlonworld.com" style="color:#0B5ED7">info@averlonworld.com</a> · +91 9892440788
+              </p>
+            </div>`,
+        }),
+      });
+
+      setSubmitted(true);
+      handleClear();
+    } catch (err) {
+      console.error("Email send failed:", err);
+      // Optionally surface an error state to the user here
+    } finally {
+      setLoading(false);
+    }
   };
 
   // ── FAQ scroll helper ──
   const handleVisitFaq = () => {
     const isHome = location.pathname === "/";
     if (isHome) {
-      // Already on home page — just scroll
       document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" });
     } else {
-      // Navigate to home, then scroll after mount
       navigate("/");
       setTimeout(() => {
         document.getElementById("faq")?.scrollIntoView({ behavior: "smooth" });
@@ -82,7 +153,7 @@ useEffect(() => {
       ],
     },
     {
-      Icon: Building2, title: "Sales Inquiries", tag: "Mon–Fri", tagColor: "#7C3AED",
+      Icon: Building2, title: "Sales Inquiries", tag: "Mon–Sat", tagColor: "#7C3AED",
       accent: "#7C3AED",
       bgGrad: "linear-gradient(135deg,rgba(124,58,237,0.06) 0%,rgba(124,58,237,0.02) 100%)",
       border: "rgba(124,58,237,0.15)",
@@ -90,7 +161,7 @@ useEffect(() => {
       details: [
         { Icon: Mail,  label: "Email", value: "info@averlonworld.com" },
         { Icon: Phone, label: "Phone", value: "+91 9892440788" },
-        { Icon: Clock, label: "Hours", value: "9AM – 6PM IST" },
+        { Icon: Clock, label: "Hours", value: "9:30AM – 6:30PM IST" },
       ],
     },
     {
