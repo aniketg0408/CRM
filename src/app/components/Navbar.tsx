@@ -134,12 +134,7 @@ export default function Navbar({ activeNav, onNavClick }: NavbarProps) {
 
         {/* Mobile dropdown */}
         <div className="lg:hidden" style={{ position: 'fixed', top: '68px', left: 0, right: 0, backgroundColor: '#FFFFFF', borderTop: '1px solid #E2E8F0', boxShadow: '0 12px 32px rgba(0,0,0,0.12)', transform: mobileMenuOpen ? 'translateY(0)' : 'translateY(-120%)', transition: 'transform 0.3s ease', zIndex: 100 }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '12px 16px 16px' }}>
-
-            {/* Mobile logo */}
-            <div style={{ padding: '6px 14px 14px', borderBottom: '1px solid #F1F5F9', marginBottom: '8px' }}>
-              <img src={logo} alt="CRM Logo" style={{ height: '34px', width: 'auto', objectFit: 'contain' }} />
-            </div>
+          <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '16px' }}>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginBottom: '12px' }}>
               {navLinks.map((item) => {

@@ -72,14 +72,14 @@ export default function Footer({ onNavClick, onLegalClick }: FooterProps) {
             <h4 style={{ color: '#8B92B0', fontWeight: 700, fontSize: '11px', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: '14px' }}>Contact</h4>
             <ul className="space-y-3">
               <li>
-                <a href="mailto:info@aveironworld.com" className="flex items-start gap-2.5" style={{ textDecoration: 'none' }}>
+                <a href="mailto:info@averlonworld.com" className="flex items-start gap-2.5" style={{ textDecoration: 'none' }}>
                   <div className="mt-0.5 w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: 'rgba(11,94,215,0.2)' }}>
                     <Mail size={13} style={{ color: '#7DB8F7' }} />
                   </div>
                   <span style={{ color: '#8B92B0', fontSize: '13px', lineHeight: 1.5, transition: 'color 0.15s' }}
                     onMouseEnter={e => { e.currentTarget.style.color = '#FFFFFF'; }}
                     onMouseLeave={e => { e.currentTarget.style.color = '#8B92B0'; }}
-                  >info@aveironworld.com</span>
+                  >info@averlonworld.com</span>
                 </a>
               </li>
               <li>
@@ -98,7 +98,7 @@ export default function Footer({ onNavClick, onLegalClick }: FooterProps) {
                   <MapPin size={13} style={{ color: '#7DB8F7' }} />
                 </div>
                 <span style={{ color: '#8B92B0', fontSize: '13px', lineHeight: 1.6 }}>
-                  5th Floor, Lodha Supremus II, Unit No. A-533/A-507, Wagle Industrial Estate, Thane West, Maharashtra<br />India — 400604
+                  5th Floor, Lodha Supremus II, Unit No. A-533/A-515, Wagle Industrial Estate, Thane West, Maharashtra<br />India — 400604
                 </span>
               </li>
             </ul>

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import { Phone, Check, X, Mail, MapPin, Linkedin, Twitter, Github, ArrowRight, TrendingUp, Users, Award, Clock, ChevronDown, UserPlus, PhoneCall, Sparkles, Trophy, Zap, Shield, Smartphone, FileText, RefreshCw, BarChart2, Target, Building2, ClipboardList, MessageSquare, Briefcase, CheckSquare, Activity, UserCircle, Lock, History, GitMerge, LayoutGrid, Settings2, Calendar } from 'lucide-react';
@@ -140,25 +141,6 @@ function useFullPageAnimations() {
         ease: 'power3.out',
         delay: index * 0.08
       });
-
-      // Bonus: Icon animation
-      const icon = card.querySelector('.feature-icon');
-      if (icon) {
-        gsap.set(icon, { rotation: 0, scale: 1 });
-        gsap.to(icon, {
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 88%',
-            end: 'top 52%',
-            scrub: 0.3,
-          },
-          rotation: 360,
-          scale: 1.1,
-          ease: 'none',
-          delay: index * 0.08
-        });
-      }
-
     });
 
     // Row 2: slide in from RIGHT with stagger
@@ -178,33 +160,13 @@ function useFullPageAnimations() {
         ease: 'power3.out',
         delay: index * 0.08
       });
-
-      // Bonus: Icon animation for row 2
-      const icon = card.querySelector('.feature-icon');
-      if (icon) {
-        gsap.set(icon, { rotation: 0, scale: 1 });
-        gsap.to(icon, {
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 88%',
-            end: 'top 52%',
-            scrub: 0.3,
-          },
-          rotation: -360,
-          scale: 1.1,
-          ease: 'none',
-          delay: index * 0.08
-        });
-      }
-
     });
 
-    // How-it-works steps - ADVANCED scroll animations (multiple options)
+    // How-it-works steps - ADVANCED scroll animations
     const steps = document.querySelectorAll('[data-animate="step"]');
     
     steps.forEach((step, index) => {
-      // OPTION 1: FLOWING CASCADE (Active by default)
-      // Each step flows in sequence from left, stacks upward
+      // FLOWING CASCADE 
       const flowDelay = index * 0.15;
       gsap.set(step, { opacity: 1, x: -60, y: 30, rotation: -2 });
       gsap.to(step, {
@@ -222,45 +184,7 @@ function useFullPageAnimations() {
         delay: flowDelay * 0.1
       });
 
-      // OPTION 2: STAGGERED SCALE POP (Comment in to use)
-      // Uncomment below to replace Option 1
-      /*
-      gsap.set(step, { opacity: 1, scale: 0.8, y: 40 });
-      gsap.to(step, {
-        scrollTrigger: {
-          trigger: step,
-          start: 'top 80%',
-          end: 'top 45%',
-          scrub: 0.4,
-        },
-        scale: 1,
-        y: 0,
-        ease: 'elastic.out(1.2, 0.75)', // Bouncy!
-        delay: index * 0.12
-      });
-      */
-
-      // OPTION 3: SPIRAL ROTATION (Comment in to use)
-      // Steps rotate and scale in a spiral motion
-      /*
-      gsap.set(step, { opacity: 1, scale: 0.6, rotation: 180, y: 60 });
-      gsap.to(step, {
-        scrollTrigger: {
-          trigger: step,
-          start: 'top 75%',
-          end: 'top 40%',
-          scrub: 0.6,
-        },
-        scale: 1,
-        rotation: 0,
-        y: 0,
-        ease: 'power2.out',
-        delay: index * 0.08
-      });
-      */
-
       // Bonus: Connector line animation
-      // Animates the line connecting steps
       if (index === 0) {
         const connector = document.querySelector('[data-animate="step-connector"]');
         if (connector) {
@@ -282,8 +206,7 @@ function useFullPageAnimations() {
     // Lead Management cards - ENHANCED advanced animations
     const leadMgmtCards = document.querySelectorAll('[data-animate="lead-mgmt-card"]');
     leadMgmtCards.forEach((card, index) => {
-      // OPTION 1: PARALLAX REVEAL (Default - Active)
-      // Cards slide in with parallax and glow effect
+      // PARALLAX REVEAL 
       gsap.set(card, { opacity: 1, x: index === 0 ? -100 : 100, y: 60, filter: 'blur(8px)' });
       gsap.to(card, {
         scrollTrigger: {
@@ -312,49 +235,11 @@ function useFullPageAnimations() {
         boxShadow: '0 32px 80px rgba(11,94,215,0.24)',
         ease: 'none'
       });
-
-      // OPTION 2: FLIP WITH DEPTH (Uncomment to use)
-      /*
-      gsap.set(card, { opacity: 1, rotationY: index === 0 ? -45 : 45, y: 80, transformPerspective: 1200 });
-      gsap.to(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 72%',
-          end: 'top 40%',
-          scrub: 0.6,
-        },
-        rotationY: 0,
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out',
-        delay: index * 0.2
-      });
-      */
-
-      // OPTION 3: SCALE WITH ROTATION (Uncomment to use)
-      /*
-      gsap.set(card, { opacity: 1, scale: 0.8, rotation: index === 0 ? -8 : 8, y: 50 });
-      gsap.to(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 72%',
-          end: 'top 40%',
-          scrub: 0.4,
-        },
-        scale: 1,
-        rotation: 0,
-        y: 0,
-        opacity: 1,
-        ease: 'elastic.out(1.2, 0.75)',
-        delay: index * 0.15
-      });
-      */
     });
 
-    // Integration features - ADVANCED staggered animations
+    // Integration features
     const integrationFeatures = document.querySelectorAll('[data-animate="integration-feature"]');
     integrationFeatures.forEach((feature, index) => {
-      // OPTION 1: SLIDE IN WITH CHECKMARK BOUNCE (Default - Active)
       gsap.set(feature, { opacity: 1, x: -60, y: 20 });
       gsap.to(feature, {
         scrollTrigger: {
@@ -370,7 +255,6 @@ function useFullPageAnimations() {
         delay: index * 0.06
       });
 
-      // Checkmark scales up
       const checkmark = feature.querySelector('svg');
       if (checkmark) {
         gsap.set(checkmark, { scale: 0, rotation: -180 });
@@ -387,48 +271,11 @@ function useFullPageAnimations() {
           delay: index * 0.06
         });
       }
-
-      // OPTION 2: ROTATE IN (Uncomment to use)
-      /*
-      gsap.set(feature, { opacity: 1, rotation: -90, y: 40 });
-      gsap.to(feature, {
-        scrollTrigger: {
-          trigger: feature,
-          start: 'top 80%',
-          end: 'top 55%',
-          scrub: 0.4,
-        },
-        rotation: 0,
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out',
-        delay: index * 0.08
-      });
-      */
-
-      // OPTION 3: BLUR REVEAL (Uncomment to use)
-      /*
-      gsap.set(feature, { opacity: 0.2, filter: 'blur(12px)', x: -40 });
-      gsap.to(feature, {
-        scrollTrigger: {
-          trigger: feature,
-          start: 'top 80%',
-          end: 'top 55%',
-          scrub: 0.3,
-        },
-        opacity: 1,
-        filter: 'blur(0px)',
-        x: 0,
-        ease: 'power2.out',
-        delay: index * 0.05
-      });
-      */
     });
 
-    // Integration cards - ADVANCED entrance animations
+    // Integration cards 
     const integrationCards = document.querySelectorAll('[data-animate="integration-card"]');
     integrationCards.forEach((card, index) => {
-      // OPTION 1: STAGGERED SCALE WITH BOUNCE (Default - Active)
       gsap.set(card, { opacity: 1, scale: 0.7, y: 40, rotation: -15 });
       gsap.to(card, {
         scrollTrigger: {
@@ -444,47 +291,9 @@ function useFullPageAnimations() {
         ease: 'elastic.out(1.4, 0.6)',
         delay: (index % 3) * 0.12
       });
-
-      // OPTION 2: FLIP + SCALE (Uncomment to use)
-      /*
-      gsap.set(card, { opacity: 1, rotationX: 80, scale: 0.8, y: 50 });
-      gsap.to(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 75%',
-          end: 'top 50%',
-          scrub: 0.4,
-        },
-        rotationX: 0,
-        scale: 1,
-        y: 0,
-        opacity: 1,
-        ease: 'power3.out',
-        delay: (index % 3) * 0.1
-      });
-      */
-
-      // OPTION 3: SPIRAL ENTRANCE (Uncomment to use)
-      /*
-      gsap.set(card, { opacity: 1, scale: 0.5, rotation: 180, y: 60 });
-      gsap.to(card, {
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 75%',
-          end: 'top 50%',
-          scrub: 0.5,
-        },
-        scale: 1,
-        rotation: 0,
-        y: 0,
-        opacity: 1,
-        ease: 'power2.out',
-        delay: (index % 3) * 0.08
-      });
-      */
     });
 
-    // Lead Management section header animation (bonus)
+    // Headers animations
     const leadMgmtHeader = document.querySelector('[id="lead-mgmt-header"]');
     if (leadMgmtHeader) {
       gsap.set(leadMgmtHeader, { opacity: 1, y: 30 });
@@ -501,7 +310,6 @@ function useFullPageAnimations() {
       });
     }
 
-    // Integration section header animation (bonus)
     const integrationHeader = document.querySelector('[id="integration-header"]');
     if (integrationHeader) {
       gsap.set(integrationHeader, { opacity: 1, x: -40, y: 20 });
@@ -518,7 +326,8 @@ function useFullPageAnimations() {
         ease: 'power2.out'
       });
     }
-    // Why Us section items - fade and slide
+    
+    // Why Us section items 
     const whyUsItems = document.querySelectorAll('[data-animate="why-item"]');
     whyUsItems.forEach((item, index) => {
       gsap.set(item, { opacity: 1, x: index % 2 === 0 ? -40 : 40, y: 20 });
@@ -535,7 +344,7 @@ function useFullPageAnimations() {
       });
     });
 
-    // Pricing cards - scale and fade in
+    // Pricing cards 
     const pricingCards = document.querySelectorAll('[data-animate="pricing-card"]');
     pricingCards.forEach((card, index) => {
       gsap.set(card, { opacity: 1, scale: 0.92, y: 50 });
@@ -553,7 +362,7 @@ function useFullPageAnimations() {
       });
     });
 
-    // FAQ items - subtle reveal
+    // FAQ items
     const faqItems = document.querySelectorAll('[data-animate="faq-item"]');
     faqItems.forEach((item, index) => {
       gsap.set(item, { opacity: 1, y: 20 });
@@ -571,21 +380,11 @@ function useFullPageAnimations() {
     });
 
     return () => {
-      featureCards.forEach(card => {
-        gsap.killTweensOf(card);
-      });
-      steps.forEach(step => {
-        gsap.killTweensOf(step);
-      });
-      whyUsItems.forEach(item => {
-        gsap.killTweensOf(item);
-      });
-      pricingCards.forEach(card => {
-        gsap.killTweensOf(card);
-      });
-      faqItems.forEach(item => {
-        gsap.killTweensOf(item);
-      });
+      featureCards.forEach(card => gsap.killTweensOf(card));
+      steps.forEach(step => gsap.killTweensOf(step));
+      whyUsItems.forEach(item => gsap.killTweensOf(item));
+      pricingCards.forEach(card => gsap.killTweensOf(card));
+      faqItems.forEach(item => gsap.killTweensOf(item));
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
@@ -713,7 +512,7 @@ function GSAPTypewriterLoader() {
 
         {/* Main typewriter line */}
         <div style={{
-          fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif",
+          fontFamily: "'Inter', sans-serif",
           fontSize: 'clamp(24px, 3.5vw, 42px)',
           fontWeight: 300,
           letterSpacing: '0.06em',
@@ -771,7 +570,7 @@ function GSAPTypewriterLoader() {
           textTransform: 'uppercase',
           fontWeight: 500,
           opacity: 0,
-          fontFamily: "'Plus Jakarta Sans', 'Inter', sans-serif",
+          fontFamily: "'Inter', sans-serif",
         }}>
           Empowering Businesses with Strength
         </p>
@@ -949,7 +748,7 @@ export default function App() {
             <div ref={heroLeftRef}>
               
               
-              <h1 ref={headingRef} style={{ fontSize: 'clamp(28px, 5vw, 50px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.12, marginBottom: '14px' }}>
+              <h1 ref={headingRef} style={{ fontSize: 'clamp(28px, 5vw, 50px)', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 800, lineHeight: 1.12, marginBottom: '14px' }}>
                 Manage Leads.<br />
                 <span style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Close Deals.</span><br />
                 Grow Faster.
@@ -1019,7 +818,7 @@ export default function App() {
                       <div key={i} className="p-3" style={{ borderRight: i < 3 ? '1px solid #E2E8F0' : 'none', backgroundColor: '#FFFFFF' }}>
                         <div style={{ fontSize: '9px', color: '#94A3B8', marginBottom: '4px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{card.label}</div>
                         <div className="flex items-end justify-between">
-                          <div style={{ fontSize: '20px', color: '#0B5ED7', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800 }}>{card.value}</div>
+                          <div style={{ fontSize: '20px', color: '#0B5ED7', fontFamily: 'Inter, sans-serif', fontWeight: 800 }}>{card.value}</div>
                           <div className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-full" style={{ backgroundColor: card.up ? '#DCFCE7' : '#FEF3C7', fontSize: '8px', color: card.up ? '#16A34A' : '#D97706', fontWeight: 700 }}>
                             {card.up ? '↑' : '↓'} {card.trend}
                           </div>
@@ -1100,12 +899,6 @@ export default function App() {
             </div>
           </div>
         </div>
-
-        {/* Scroll-down indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1" style={{ opacity: 0.4, animation: 'bounce 2s infinite' }}>
-          <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Scroll</span>
-          <ChevronDown size={16} style={{ color: '#64748B' }} />
-        </div>
       </section>
 
 
@@ -1123,7 +916,7 @@ export default function App() {
               <span style={{ fontSize: '13px' }}>✦</span>
               <span style={{ color: '#0B5ED7', fontWeight: 700, fontSize: '12px', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Features</span>
             </div>
-            <h2 style={{ fontSize: 'clamp(32px, 4.5vw, 52px)', color: '#0F1F3D', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.1, marginBottom: '16px' }}>
+            <h2 style={{ fontSize: 'clamp(32px, 4.5vw, 52px)', color: '#0F1F3D', fontFamily: 'Inter, sans-serif', fontWeight: 800, lineHeight: 1.1, marginBottom: '16px' }}>
               Everything You Need to<br />Sell Better
             </h2>
             <p style={{ fontSize: '17px', color: '#64748B', maxWidth: '560px', margin: '0 auto', lineHeight: 1.7 }}>
@@ -1131,164 +924,181 @@ export default function App() {
             </p>
           </div>
 
-          {/* Feature cards grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
-            {[
+          {/* Feature cards grid — 9 cards in 3×3 layout */}
+          {[
+            // Row 1
+            [
               {
                 svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="3" y="3" width="11" height="11" rx="2.5" stroke="#0B5ED7" strokeWidth="2"/><rect x="18" y="3" width="11" height="11" rx="2.5" stroke="#0B5ED7" strokeWidth="2"/><rect x="3" y="18" width="11" height="11" rx="2.5" stroke="#0B5ED7" strokeWidth="2"/><rect x="18" y="18" width="11" height="11" rx="2.5" stroke="#1E88E5" strokeWidth="2" strokeDasharray="2 1.5"/></svg>),
-                title: 'Smart Lead Management',
-                description: 'Capture, assign, and track leads from any source. Auto status updates, bulk import, and role-based visibility keep your team aligned.',
+                title: 'Sales management',
+                description: 'Manage leads, deals, contacts, pipelines, access permissions & roles.',
                 accent: '#0B5ED7',
                 featured: true,
+                animRow: 'feature-card',
+                slug: 'sales-management',
               },
               {
-                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="10" r="5" stroke="#0B8A6E" strokeWidth="2"/><circle cx="7" cy="24" r="4" stroke="#0B8A6E" strokeWidth="2"/><circle cx="25" cy="24" r="4" stroke="#0B8A6E" strokeWidth="2"/><path d="M11 14l-4 6M21 14l4 6M12 10h8" stroke="#0B8A6E" strokeWidth="1.5" strokeLinecap="round"/></svg>),
-                title: 'Visual Deal Pipeline',
-                description: 'Move deals through fully customisable stages. Real-time pipeline value, win rate, and velocity — your revenue in motion.',
+                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 8h20v14a2 2 0 01-2 2H8a2 2 0 01-2-2V8z" stroke="#0B8A6E" strokeWidth="2"/><path d="M6 8l10 9 10-9" stroke="#0B8A6E" strokeWidth="1.8" strokeLinecap="round"/><circle cx="24" cy="22" r="5" fill="#0B8A6E" fillOpacity="0.15" stroke="#0B8A6E" strokeWidth="1.5"/><path d="M22 22h4M24 20v4" stroke="#0B8A6E" strokeWidth="1.5" strokeLinecap="round"/></svg>),
+                title: 'Contact center',
+                description: 'Manage customer messages, calls, and chats from a single platform to provide faster support and better service.',
                 accent: '#0B8A6E',
                 featured: false,
+                animRow: 'feature-card',
+                slug: 'contact-center',
               },
               {
-                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="6" y="4" width="20" height="24" rx="3" stroke="#7C3AED" strokeWidth="2"/><path d="M10 10h12M10 15h12M10 20h7" stroke="#7C3AED" strokeWidth="1.8" strokeLinecap="round"/></svg>),
-                title: 'Task & Follow-up Engine',
-                description: 'Create daily task lists linked to leads and deals. Reminders, priority flags, and overdue escalation — zero missed follow-ups.',
+                // NEW: Users / Team collaboration Icon
+                svg: (
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <path d="M23 26v-2a4 4 0 00-3-3.87" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M9 26v-2a4 4 0 013-3.87" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M16 26v-2a4 4 0 00-4-4h8a4 4 0 014 4v2" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <circle cx="16" cy="11" r="4" stroke="#7C3AED" strokeWidth="2"/>
+                    <circle cx="9" cy="13" r="3" stroke="#7C3AED" strokeWidth="2"/>
+                    <circle cx="23" cy="13" r="3" stroke="#7C3AED" strokeWidth="2"/>
+                  </svg>
+                ),
+                title: 'Sales team collaboration',
+                description: 'Work with chat, video calls, tasks, calendar, file storage, online documents.',
                 accent: '#7C3AED',
                 featured: false,
+                animRow: 'feature-card',
+                slug: 'sales-team-collaboration',
               },
+            ],
+            // Row 2
+            [
               {
-                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4v6M16 22v6M4 16h6M22 16h6" stroke="#D97706" strokeWidth="2" strokeLinecap="round"/><circle cx="16" cy="16" r="6" stroke="#D97706" strokeWidth="2"/></svg>),
-                title: 'Activity History',
-                description: 'Every call, email, note, and status change logged automatically. Full timestamped timeline per lead — context before every conversation.',
+                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="6" width="24" height="20" rx="3" stroke="#D97706" strokeWidth="2"/><path d="M4 12h24" stroke="#D97706" strokeWidth="1.5"/><path d="M10 18h4M10 22h8" stroke="#D97706" strokeWidth="1.8" strokeLinecap="round"/><circle cx="23" cy="20" r="3" fill="#D97706" fillOpacity="0.2" stroke="#D97706" strokeWidth="1.5"/></svg>),
+                title: 'Sales enablement',
+                description: 'Get estimates, invoices, payments, catalog, inventory, e-signature, CRM store.',
                 accent: '#D97706',
                 featured: false,
+                animRow: 'feature-card-row2',
+                slug: 'sales-enablement',
               },
-            ].map((feature, i) => (
-              <div key={i} data-animate="feature-card" className="rounded-2xl p-6 cursor-pointer relative overflow-hidden group"
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  border: feature.featured ? `2px solid ${feature.accent}` : '1.5px solid #E2E8F0',
-                  borderTop: `3px solid ${feature.accent}`,
-                  boxShadow: feature.featured ? `0 8px 32px ${feature.accent}18` : '0 2px 12px rgba(0,0,0,0.04)',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget;
-                  el.style.transform = 'translateY(-6px)';
-                  el.style.boxShadow = `0 20px 48px ${feature.accent}22`;
-                  el.style.borderColor = feature.accent;
-                  el.style.borderWidth = '2px';
-                  const glow = el.querySelector('.card-glow') as HTMLElement;
-                  if (glow) glow.style.opacity = '1';
-                  const iconBox = el.querySelector('.icon-box') as HTMLElement;
-                  if (iconBox) { iconBox.style.backgroundColor = feature.accent + '15'; iconBox.style.borderColor = feature.accent + '40'; }
-                  const title = el.querySelector('.card-title') as HTMLElement;
-                  if (title) title.style.color = feature.accent;
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget;
-                  el.style.transform = 'translateY(0)';
-                  el.style.boxShadow = feature.featured ? `0 8px 32px ${feature.accent}18` : '0 2px 12px rgba(0,0,0,0.04)';
-                  el.style.borderColor = feature.featured ? feature.accent : '#E2E8F0';
-                  el.style.borderWidth = feature.featured ? '2px' : '1.5px';
-                  const glow = el.querySelector('.card-glow') as HTMLElement;
-                  if (glow) glow.style.opacity = '0';
-                  const iconBox = el.querySelector('.icon-box') as HTMLElement;
-                  if (iconBox) { iconBox.style.backgroundColor = feature.accent + '10'; iconBox.style.borderColor = feature.accent + '20'; }
-                  const title = el.querySelector('.card-title') as HTMLElement;
-                  if (title) title.style.color = '#0F1F3D';
-                }}
-              >
-                {/* Glow background on hover */}
-                <div className="card-glow absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at top left, ${feature.accent}0D 0%, transparent 65%)`, opacity: 0, transition: 'opacity 0.3s ease' }}></div>
-
-                <div className="icon-box w-12 h-12 rounded-xl flex items-center justify-center mb-5 relative z-10"
-                  style={{ backgroundColor: feature.accent + '10', border: `1px solid ${feature.accent}20`, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
-                  {/* Swap SVG stroke on hover via filter */}
-                  <div className="feature-icon" style={{ transition: 'filter 0.3s ease' }}>{feature.svg}</div>
-                </div>
-
-                <h3 className="card-title" style={{ fontSize: '16px', color: '#0F1F3D', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '10px', lineHeight: 1.3, transition: 'color 0.25s ease' }}>{feature.title}</h3>
-                <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.75 }}>{feature.description}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* Second row */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {[
               {
-                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="18" width="5" height="10" rx="1.5" fill="#0B5ED7" fillOpacity="0.15" stroke="#0B5ED7" strokeWidth="1.8"/><rect x="13" y="12" width="5" height="16" rx="1.5" fill="#0B5ED7" fillOpacity="0.25" stroke="#0B5ED7" strokeWidth="1.8"/><rect x="22" y="6" width="5" height="22" rx="1.5" fill="#0B5ED7" fillOpacity="0.4" stroke="#0B5ED7" strokeWidth="1.8"/></svg>),
-                title: 'Dashboard & Reports',
-                description: 'Real-time overview of leads, pipeline health, and rep performance. 12+ report types with one-click CSV export.',
+                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="18" width="5" height="10" rx="1.5" fill="#0B5ED7" fillOpacity="0.15" stroke="#0B5ED7" strokeWidth="1.8"/><rect x="13" y="12" width="5" height="16" rx="1.5" fill="#0B5ED7" fillOpacity="0.25" stroke="#0B5ED7" strokeWidth="1.8"/><rect x="22" y="6" width="5" height="22" rx="1.5" fill="#0B5ED7" fillOpacity="0.4" stroke="#0B5ED7" strokeWidth="1.8"/><path d="M6 16l4-3 5 4 5-6 5-3" stroke="#0B5ED7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>),
+                title: 'Analytics & reports',
+                description: 'Analyze sales funnel, employee performance, Sales Intelligence, BI Builder dashboards.',
                 accent: '#0B5ED7',
+                featured: false,
+                animRow: 'feature-card-row2',
+                slug: 'analytics-reports',
               },
               {
-                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="4" y="8" width="24" height="16" rx="3" stroke="#0B8A6E" strokeWidth="2"/><path d="M4 12h24" stroke="#0B8A6E" strokeWidth="1.5"/><circle cx="9" cy="20" r="2" fill="#0B8A6E" fillOpacity="0.3" stroke="#0B8A6E" strokeWidth="1.5"/><path d="M14 20h8" stroke="#0B8A6E" strokeWidth="1.5" strokeLinecap="round"/></svg>),
-                title: 'Multi-Tenant Architecture',
-                description: 'Each company gets its own fully isolated workspace — separate data, users, and pipelines. Perfect for agencies and enterprises.',
+                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><rect x="9" y="4" width="14" height="24" rx="3" stroke="#0B8A6E" strokeWidth="2"/><path d="M13 8h6M13 12h6M13 16h4" stroke="#0B8A6E" strokeWidth="1.5" strokeLinecap="round"/><circle cx="16" cy="23" r="1.5" fill="#0B8A6E"/></svg>),
+                title: 'Mobile CRM',
+                description: 'Leads, deals, invoices, payments, telephony, emails, inventory, calendar at your fingertips.',
                 accent: '#0B8A6E',
+                featured: false,
+                animRow: 'feature-card-row2',
+                slug: 'mobile-crm',
               },
+            ],
+            // Row 3
+            [
               {
-                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M16 4L6 9v8c0 5.5 4.3 10.7 10 12 5.7-1.3 10-6.5 10-12V9L16 4z" stroke="#7C3AED" strokeWidth="2" strokeLinejoin="round"/><path d="M11 16l3 3 7-7" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>),
-                title: 'Role-Based Access',
-                description: 'Admin sees everything. Sales reps see only their leads. Granular permissions that keep data secure and teams focused.',
+                // NEW: Megaphone Icon
+                svg: (
+                  <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <path d="M6 11l8 0l8-7v24l-8-7l-8 0z" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M26 12c2 1.5 2 6.5 0 8" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    <path d="M14 21v6c0 1-1 2-2 2s-2-1-2-2v-6" stroke="#7C3AED" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                ),
+                title: 'Marketing',
+                description: 'Use email campaigns, social media ads, SMS, telemarketing, landing pages.',
                 accent: '#7C3AED',
+                featured: false,
+                animRow: 'feature-card-row2',
+                slug: 'marketing',
               },
               {
-                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="#D97706" strokeWidth="2"/><path d="M16 10v6l4 2" stroke="#D97706" strokeWidth="2" strokeLinecap="round"/></svg>),
-                title: 'Real-Time Updates',
-                description: 'Status changes, deal moves, and task completions reflect instantly for your whole team — no refresh, no lag, always in sync.',
+                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><path d="M6 16h4l3-8 4 16 3-12 3 8 4-4" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><rect x="24" y="4" width="5" height="5" rx="1" fill="#D97706" fillOpacity="0.2" stroke="#D97706" strokeWidth="1.5"/><path d="M26.5 6.5v.5h.5" stroke="#D97706" strokeWidth="1.2" strokeLinecap="round"/></svg>),
+                title: 'Automation & integrations',
+                description: 'Set CRM rules and triggers, workflow automation, automated funnels, API.',
                 accent: '#D97706',
+                featured: false,
+                animRow: 'feature-card-row2',
+                slug: 'automation-integrations',
               },
-            ].map((feature, i) => (
-              <div key={i} data-animate="feature-card-row2" className="rounded-2xl p-6 cursor-pointer relative overflow-hidden"
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  border: '1.5px solid #E2E8F0',
-                  borderTop: `3px solid ${feature.accent}`,
-                  boxShadow: '0 2px 12px rgba(0,0,0,0.04)',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                }}
-                onMouseEnter={e => {
-                  const el = e.currentTarget;
-                  el.style.transform = 'translateY(-6px)';
-                  el.style.boxShadow = `0 20px 48px ${feature.accent}22`;
-                  el.style.borderColor = feature.accent;
-                  el.style.borderWidth = '2px';
-                  const glow = el.querySelector('.card-glow') as HTMLElement;
-                  if (glow) glow.style.opacity = '1';
-                  const iconBox = el.querySelector('.icon-box') as HTMLElement;
-                  if (iconBox) { iconBox.style.backgroundColor = feature.accent + '15'; iconBox.style.borderColor = feature.accent + '40'; }
-                  const title = el.querySelector('.card-title') as HTMLElement;
-                  if (title) title.style.color = feature.accent;
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget;
-                  el.style.transform = 'translateY(0)';
-                  el.style.boxShadow = '0 2px 12px rgba(0,0,0,0.04)';
-                  el.style.borderColor = '#E2E8F0';
-                  el.style.borderWidth = '1.5px';
-                  const glow = el.querySelector('.card-glow') as HTMLElement;
-                  if (glow) glow.style.opacity = '0';
-                  const iconBox = el.querySelector('.icon-box') as HTMLElement;
-                  if (iconBox) { iconBox.style.backgroundColor = feature.accent + '10'; iconBox.style.borderColor = feature.accent + '20'; }
-                  const title = el.querySelector('.card-title') as HTMLElement;
-                  if (title) title.style.color = '#0F1F3D';
-                }}
-              >
-                {/* Glow background on hover */}
-                <div className="card-glow absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at top left, ${feature.accent}0D 0%, transparent 65%)`, opacity: 0, transition: 'opacity 0.3s ease' }}></div>
+              {
+                svg: (<svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="#0B5ED7" strokeWidth="2"/><path d="M11 16c1-3 3-5 5-5s4 2 5 5-3 5-5 5-5-2-5-5z" stroke="#0B5ED7" strokeWidth="1.5"/><path d="M16 11v2M16 19v2M11 16h2M19 16h2" stroke="#0B5ED7" strokeWidth="1.5" strokeLinecap="round"/></svg>),
+                title: 'CoPilot in CRM',
+                description: 'Call audio-to-text transcription, call summary, field autocompletion in deals.',
+                accent: '#0B5ED7',
+                featured: false,
+                animRow: 'feature-card-row2',
+                slug: 'copilot-in-crm',
+              },
+            ],
+          ].map((row, rowIdx) => (
+            <div key={rowIdx} className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 ${rowIdx < 2 ? 'mb-5' : ''}`}>
+              {row.map((feature, i) => (
+                <div key={i} data-animate={feature.animRow} className="rounded-2xl p-6 relative overflow-hidden group flex flex-col"
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    border: feature.featured ? `2px solid ${feature.accent}` : '1.5px solid #E2E8F0',
+                    borderTop: `3px solid ${feature.accent}`,
+                    boxShadow: feature.featured ? `0 8px 32px ${feature.accent}18` : '0 2px 12px rgba(0,0,0,0.04)',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  }}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget;
+                    el.style.transform = 'translateY(-6px)';
+                    el.style.boxShadow = `0 20px 48px ${feature.accent}22`;
+                    el.style.borderColor = feature.accent;
+                    el.style.borderWidth = '2px';
+                    const glow = el.querySelector('.card-glow') as HTMLElement;
+                    if (glow) glow.style.opacity = '1';
+                    const iconBox = el.querySelector('.icon-box') as HTMLElement;
+                    if (iconBox) { iconBox.style.backgroundColor = feature.accent + '15'; iconBox.style.borderColor = feature.accent + '40'; }
+                    const title = el.querySelector('.card-title') as HTMLElement;
+                    if (title) title.style.color = feature.accent;
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget;
+                    el.style.transform = 'translateY(0)';
+                    el.style.boxShadow = feature.featured ? `0 8px 32px ${feature.accent}18` : '0 2px 12px rgba(0,0,0,0.04)';
+                    el.style.borderColor = feature.featured ? feature.accent : '#E2E8F0';
+                    el.style.borderWidth = feature.featured ? '2px' : '1.5px';
+                    const glow = el.querySelector('.card-glow') as HTMLElement;
+                    if (glow) glow.style.opacity = '0';
+                    const iconBox = el.querySelector('.icon-box') as HTMLElement;
+                    if (iconBox) { iconBox.style.backgroundColor = feature.accent + '10'; iconBox.style.borderColor = feature.accent + '20'; }
+                    const title = el.querySelector('.card-title') as HTMLElement;
+                    if (title) title.style.color = '#0F1F3D';
+                  }}
+                >
+                  {/* Glow background on hover */}
+                  <div className="card-glow absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse at top left, ${feature.accent}0D 0%, transparent 65%)`, opacity: 0, transition: 'opacity 0.3s ease' }}></div>
 
-                <div className="icon-box w-12 h-12 rounded-xl flex items-center justify-center mb-5 relative z-10"
-                  style={{ backgroundColor: feature.accent + '10', border: `1px solid ${feature.accent}20`, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
-                  <div className="feature-icon" style={{ transition: 'filter 0.3s ease' }}>{feature.svg}</div>
+                  <div className="icon-box w-12 h-12 rounded-xl flex items-center justify-center mb-5 relative z-10"
+                    style={{ backgroundColor: feature.accent + '10', border: `1px solid ${feature.accent}20`, transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+                    <div className="feature-icon" style={{ transition: 'filter 0.3s ease' }}>{feature.svg}</div>
+                  </div>
+
+                  <h3 className="card-title" style={{ fontSize: '16px', color: '#0F1F3D', fontFamily: 'Inter, sans-serif', fontWeight: 700, marginBottom: '10px', lineHeight: 1.3, transition: 'color 0.25s ease' }}>{feature.title}</h3>
+                  <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.75, marginBottom: '20px' }}>{feature.description}</p>
+
+                  {/* Read More button */}
+                  <div className="mt-auto relative z-10">
+                    <button
+                      onClick={() => navigate(`/features/${feature.slug}`)}
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold transition-all group/btn"
+                      style={{ color: feature.accent, background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}
+                      onMouseEnter={e => { const arrow = e.currentTarget.querySelector('.btn-arrow') as HTMLElement; if (arrow) arrow.style.transform = 'translateX(4px)'; }}
+                      onMouseLeave={e => { const arrow = e.currentTarget.querySelector('.btn-arrow') as HTMLElement; if (arrow) arrow.style.transform = 'translateX(0)'; }}
+                    >
+                      Read More
+                      <ArrowRight size={14} className="btn-arrow" style={{ transition: 'transform 0.2s ease' }} />
+                    </button>
+                  </div>
                 </div>
-
-                <h3 className="card-title" style={{ fontSize: '16px', color: '#0F1F3D', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '10px', lineHeight: 1.3, transition: 'color 0.25s ease' }}>{feature.title}</h3>
-                <p style={{ fontSize: '13.5px', color: '#64748B', lineHeight: 1.75 }}>{feature.description}</p>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ))}
         </div>
       </section>
 
@@ -1304,7 +1114,7 @@ export default function App() {
               <span style={{ fontSize: '14px' }}>🔄</span>
               <span style={{ color: '#0B5ED7', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>WORKFLOW</span>
             </div>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.15, marginBottom: '14px' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 800, lineHeight: 1.15, marginBottom: '14px' }}>
               From lead to closed deal —<br />
               <span style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>in one seamless system</span>
             </h2>
@@ -1354,7 +1164,7 @@ export default function App() {
                     {/* Step number + tag row */}
                     <div className="flex items-center justify-between mb-5">
                       <div className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-base relative z-10"
-                        style={{ background: `linear-gradient(135deg, ${step.color}, ${step.color}CC)`, fontFamily: 'Plus Jakarta Sans, sans-serif', boxShadow: `0 4px 12px ${step.color}40` }}>
+                        style={{ background: `linear-gradient(135deg, ${step.color}, ${step.color}CC)`, fontFamily: 'Inter, sans-serif', boxShadow: `0 4px 12px ${step.color}40` }}>
                         {step.step}
                       </div>
                       <span className="px-2.5 py-1 rounded-full text-xs font-bold" style={{ backgroundColor: step.bg, color: step.color }}>{step.tag}</span>
@@ -1366,7 +1176,7 @@ export default function App() {
                       {step.icon}
                     </div>
 
-                    <h3 style={{ fontSize: '17px', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '10px' }}>{step.title}</h3>
+                    <h3 style={{ fontSize: '17px', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 700, marginBottom: '10px' }}>{step.title}</h3>
                     <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.7 }}>{step.description}</p>
 
                     {/* Bottom accent bar */}
@@ -1389,7 +1199,7 @@ export default function App() {
               <span style={{ fontSize: '14px' }}>🎯</span>
               <span style={{ color: '#EA580C', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>LEAD MANAGEMENT</span>
             </div>
-            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 38px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.2, marginBottom: '12px' }}>
+            <h2 style={{ fontSize: 'clamp(26px, 3.5vw, 38px)', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 800, lineHeight: 1.2, marginBottom: '12px' }}>
               Every lead tracked.<br />
               <span style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Every follow-up done.</span>
             </h2>
@@ -1408,7 +1218,7 @@ export default function App() {
                     <span style={{ fontSize: '18px' }}>👤</span>
                   </div>
                   <div>
-                    <div style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '15px', fontFamily: 'Plus Jakarta Sans, sans-serif' }}>Sarah Mitchell</div>
+                    <div style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '15px', fontFamily: 'Inter, sans-serif' }}>Sarah Mitchell</div>
                     <div style={{ color: 'rgba(255,255,255,0.75)', fontSize: '12px' }}>TechFlow Solutions · Enterprise</div>
                   </div>
                 </div>
@@ -1530,7 +1340,7 @@ export default function App() {
                 ].map((s, i) => (
                   <div key={i} className="p-3 sm:p-4 rounded-2xl text-center" style={{ background: s.color + '0F', border: `1px solid ${s.color}22` }}>
                     <div className="flex justify-center mb-2" style={{ color: s.color }}>{s.icon}</div>
-                    <div style={{ fontSize: '14px', color: s.color, fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800 }}>{s.value}</div>
+                    <div style={{ fontSize: '14px', color: s.color, fontFamily: 'Inter, sans-serif', fontWeight: 800 }}>{s.value}</div>
                     <div style={{ fontSize: '10px', color: '#64748B', marginTop: '2px' }}>{s.label}</div>
                   </div>
                 ))}
@@ -1553,7 +1363,7 @@ export default function App() {
               <span style={{ fontSize: '14px' }}>🏆</span>
               <span style={{ color: '#16A34A', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>WHY CHOOSE US</span>
             </div>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.15, marginBottom: '14px' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 44px)', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 800, lineHeight: 1.15, marginBottom: '14px' }}>
               Built for teams that mean<br />
               <span style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>serious business</span>
             </h2>
@@ -1600,7 +1410,7 @@ export default function App() {
                   <div className="flex items-center gap-3">
                     <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.2)' }}>{role.icon}</div>
                     <div>
-                      <div style={{ color: '#FFFFFF', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, fontSize: '20px' }}>{role.title}</div>
+                      <div style={{ color: '#FFFFFF', fontFamily: 'Inter, sans-serif', fontWeight: 800, fontSize: '20px' }}>{role.title}</div>
                       <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '12px' }}>Role-based access</div>
                     </div>
                   </div>
@@ -1641,7 +1451,7 @@ export default function App() {
                   {p.icon}
                 </div>
                 <div>
-                  <h4 style={{ fontSize: '15px', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, marginBottom: '6px' }}>{p.title}</h4>
+                  <h4 style={{ fontSize: '15px', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 700, marginBottom: '6px' }}>{p.title}</h4>
                   <p style={{ fontSize: '13px', color: '#64748B', lineHeight: 1.65 }}>{p.desc}</p>
                 </div>
               </div>
@@ -1691,7 +1501,7 @@ export default function App() {
               <div className="inline-flex items-center px-4 py-2 rounded-full mb-6" style={{ backgroundColor: '#EBF3FF' }}>
                 <span style={{ color: '#0B5ED7', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>INTEGRATIONS</span>
               </div>
-              <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, lineHeight: 1.2, marginBottom: '16px' }}>
+              <h2 style={{ fontSize: 'clamp(28px, 4vw, 40px)', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 700, lineHeight: 1.2, marginBottom: '16px' }}>
                 Connects with tools<br />your team already uses
               </h2>
               <p style={{ fontSize: '17px', color: '#64748B', lineHeight: 1.7, marginBottom: '28px' }}>
@@ -1740,7 +1550,7 @@ export default function App() {
               <Settings2 size={13} style={{ color: '#0B5ED7' }} />
               <span style={{ color: '#0B5ED7', fontWeight: 600, fontSize: '12px', letterSpacing: '0.08em', textTransform: 'uppercase' }}>FAQ</span>
             </div>
-            <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: '#1A1A1A', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 800, lineHeight: 1.2, marginBottom: '12px' }}>
+            <h2 style={{ fontSize: 'clamp(28px, 4vw, 42px)', color: '#1A1A1A', fontFamily: 'Inter, sans-serif', fontWeight: 800, lineHeight: 1.2, marginBottom: '12px' }}>
               Frequently Asked <span style={{ background: 'linear-gradient(135deg, #0B5ED7, #1E88E5)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Questions</span>
             </h2>
             <p style={{ fontSize: '17px', color: '#64748B', maxWidth: '480px', margin: '0 auto', lineHeight: 1.6 }}>Find answers to common questions about CRM's features, pricing, and implementation.</p>
@@ -1756,7 +1566,7 @@ export default function App() {
                 <button className="w-full px-4 sm:px-7 py-4 sm:py-5 flex items-center justify-between text-left"
                   onClick={() => setActiveFaqCategory(activeFaqCategory === ci ? -1 : ci)}
                 >
-                  <span style={{ fontSize: '16px', color: activeFaqCategory === ci ? '#0B5ED7' : '#1A1A1A', fontWeight: 700, fontFamily: 'Plus Jakarta Sans, sans-serif' }}>{category.label}</span>
+                  <span style={{ fontSize: '16px', color: activeFaqCategory === ci ? '#0B5ED7' : '#1A1A1A', fontWeight: 700, fontFamily: 'Inter, sans-serif' }}>{category.label}</span>
                   <div className="w-9 h-9 rounded-full flex items-center justify-center transition-all flex-shrink-0"
                     style={{ backgroundColor: activeFaqCategory === ci ? '#0B5ED7' : '#F1F5F9', color: activeFaqCategory === ci ? '#FFFFFF' : '#64748B' }}
                   >
@@ -1816,11 +1626,11 @@ export default function App() {
           <div className="relative w-full max-w-[560px] max-h-[90vh] rounded-2xl overflow-hidden flex flex-col" style={{ backgroundColor: '#0F1F3D', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 32px 80px rgba(0,0,0,0.5)' }}>
             {/* Modal header */}
             <div className="flex items-center gap-3 px-4 sm:px-6 py-4 sm:py-5 flex-shrink-0" style={{ borderBottom: '1px solid rgba(255,255,255,0.08)' }}>
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center text-base sm:text-lg flex-shrink-0" style={{ backgroundColor: 'rgba(11,94,215,0.25)', border: '1px solid rgba(11,94,215,0.4)' }}>
+              <div className="w-9 h-9 sm:w-10 h-10 rounded-xl flex items-center justify-center text-base sm:text-lg flex-shrink-0" style={{ backgroundColor: 'rgba(11,94,215,0.25)', border: '1px solid rgba(11,94,215,0.4)' }}>
                 {legalModal === 'Privacy Policy' ? '🔒' : legalModal === 'Terms of Service' ? '📄' : legalModal === 'Cookie Policy' ? '🍪' : '🛡️'}
               </div>
               <div className="min-w-0">
-                <h3 style={{ color: '#FFFFFF', fontFamily: 'Plus Jakarta Sans, sans-serif', fontWeight: 700, fontSize: '15px' }}>{legalModal}</h3>
+                <h3 style={{ color: '#FFFFFF', fontFamily: 'Inter, sans-serif', fontWeight: 700, fontSize: '15px' }}>{legalModal}</h3>
                 <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: '11px' }}>
                   {legalModal === 'Privacy Policy' ? 'How we collect, use and protect your data' : legalModal === 'Terms of Service' ? 'Terms governing your use of CRM' : legalModal === 'Cookie Policy' ? 'How we use cookies on our platform' : 'How we protect your data and platform'}
                 </p>
